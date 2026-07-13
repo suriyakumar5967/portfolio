@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(pnpm --version)",
+      "Bash(find /opt/homebrew /usr/local /Users/suriyajsk -maxdepth 4 -name node -type f 2>/dev/null | head; echo \"--- brew ---\"; which brew 2>/dev/null; ls ~/.nvm 2>/dev/null | head)",
+      "Bash(curl --version)",
+      "Bash(curl -fsSL -o node.tar.gz https://nodejs.org/dist/__TRACKED_VAR__/node-__TRACKED_VAR__-darwin-arm64.tar.gz)",
+      "Bash(tar -xzf node.tar.gz)",
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/src/main.tsx)",
+      "mcp__claude-in-chrome__navigate",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "Bash(kill 33032)",
+      "Bash(lsof -ti:5173)",
+      "Bash(xargs kill)",
+      "Bash(file \"Maxyfi field agent case-study/uploads/\"*)",
+      "Bash(file \"ZenStatement Case-study/assets/\"* \"ZenStatement Case-study/uploads/\"*)",
+      "WebFetch(domain:www.wallofportfolios.in)"
+    ]
+  }
+}
