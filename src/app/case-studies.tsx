@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ArrowLeft, ArrowUpRight, Check, List } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, List, Lock } from "lucide-react";
 import { Reveal, useScrollSpy } from "./lib/motion";
 import { PROFILE } from "./lib/content";
 
@@ -12,6 +12,9 @@ import debtPortal from "@/assets/case-studies/debt-portal.png";
 import maxyfiPlanned from "@/assets/case-studies/maxyfi-planned.jpg";
 import maxyfiUnplanned from "@/assets/case-studies/maxyfi-unplanned.jpg";
 import maxyfiCompleted from "@/assets/case-studies/maxyfi-completed.jpg";
+import creoUpload from "@/assets/case-studies/creo-upload.png";
+import creoThinking from "@/assets/case-studies/creo-thinking.png";
+import creoChart from "@/assets/case-studies/creo-chart.png";
 
 const serif = { fontFamily: "'Lora', serif" } as const;
 const mono = { fontFamily: "'JetBrains Mono', monospace" } as const;
@@ -36,6 +39,21 @@ export const CASE_STUDIES = [
   },
   {
     id: 2,
+    slug: "creo",
+    title: "Creo AI",
+    subtitle: "ZenStatement — an assistant for reconciliation",
+    summary:
+      "An AI assistant built into a reconciliation platform, so finance teams can ask a question in plain language instead of digging through the app to find the answer.",
+    industry: "AI Assistant · Fintech",
+    role: "Product Designer",
+    timeline: "5 weeks",
+    team: "",
+    outcomes: ["Ask instead of dig", "Context-aware answers", "Answers you can check"],
+    skills: ["Conversation Design", "AI UX", "Interaction Design", "Data Visualisation"],
+    image: creoChart,
+  },
+  {
+    id: 3,
     slug: "debt-collection",
     title: "Debt Collection Simplified",
     subtitle: "Maxyfi — collections & debtor payments",
@@ -50,7 +68,7 @@ export const CASE_STUDIES = [
     image: debtOverview,
   },
   {
-    id: 3,
+    id: 4,
     slug: "maxyfi",
     title: "Maxyfi",
     subtitle: "Field Agent App for Debt Collection",
@@ -715,6 +733,37 @@ function Callout({ eyebrow = "Key decision", title, children }: { eyebrow?: stri
   );
 }
 
+/**
+ * Closing note for NDA-restricted work. Deliberately quiet — it's a boundary,
+ * not an apology — and ends on an invitation to talk.
+ */
+function NdaNote({ children }: { children: React.ReactNode }) {
+  return (
+    <section className="border-t border-border py-16 md:py-24">
+      <Reveal className="max-w-4xl mx-auto px-6">
+        <div className="rounded-2xl md:rounded-3xl border border-border bg-muted/40 p-8 md:p-10">
+          <div className="flex items-center gap-2.5">
+            <span className="grid place-items-center w-7 h-7 rounded-full bg-primary/10 text-primary shrink-0">
+              <Lock size={13} aria-hidden />
+            </span>
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>
+              Protected by NDA
+            </span>
+          </div>
+          <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed mt-4">{children}</p>
+          <a
+            href={`mailto:${PROFILE.email}`}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary mt-6 group"
+          >
+            Get in touch
+            <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
 function KpiBand({ items }: { items: { label: string; sub: string }[] }) {
   return (
     <Wide>
@@ -1224,12 +1273,169 @@ function DebtCollectionDetail() {
   );
 }
 
+// ─── Creo AI (ZenStatement) ──────────────────────────────────────────────────
+// NDA-restricted: this page stays deliberately high-level. No prompts, business
+// logic, workflows, or architecture — intent and interface only.
+
+function CreoDetail() {
+  return (
+    <article>
+      <CaseHero
+        eyebrow="UX Case Study · ZenStatement · NDA-limited"
+        title={<>Reconciliation you can just <em className="italic font-normal text-primary">ask.</em></>}
+        lead="Creo is an AI assistant built into ZenStatement. Instead of digging through the platform to find out what happened to a transaction, finance teams ask in plain language — and get an answer backed by their own data."
+        meta={[
+          { label: "Role", value: "Product Designer" },
+          { label: "Timeline", value: "5 weeks" },
+          { label: "Project", value: "ZenStatement", sub: "Creo AI feature" },
+          { label: "Platform", value: "Web" },
+          { label: "Domain", value: "Reconciliation", sub: "Finance ops" },
+          { label: "Disclosure", value: "NDA-limited", sub: "~20% shown" },
+        ]}
+        image={creoUpload}
+        imageAlt="Creo AI — the assistant's starting screen inside ZenStatement"
+      />
+
+      <Chapter label="01 · Overview" title="An assistant that already knows the books.">
+        <Narrow>
+          <div className="flex flex-col gap-5">
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              ZenStatement reconciles thousands of transactions across systems. The data was all there — but getting a
+              specific answer out of it still meant knowing where to look, which filters to set, and how to read what
+              came back.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Creo closes that gap. It understands the reconciliation context a user is working in, so a question asked
+              in ordinary words returns a relevant, data-backed answer instead of a search result.
+            </p>
+          </div>
+        </Narrow>
+      </Chapter>
+
+      <Chapter label="02 · The problem" title="The answer existed. Getting to it didn't scale.">
+        <Statement>
+          Every question meant navigating the product first and thinking about the finance second — so the people who
+          most needed answers were the ones least likely to go get them.
+        </Statement>
+      </Chapter>
+
+      <Chapter
+        label="03 · Approach"
+        title="Design the conversation, not the chatbot."
+        lead="A text box is easy to draw and hard to make useful. Most of the work went into the surrounding decisions — what to offer before someone types, what to show while they wait, and how much of the answer to expose so it can be trusted."
+      >
+        <Mid>
+          <div className="grid sm:grid-cols-3 gap-x-10 gap-y-8">
+            <Feature title="Reduce the blank page">
+              A prompt box with no starting point puts the burden on the user. Give them a way in.
+            </Feature>
+            <Feature title="Show the working">
+              An answer you can't verify is an answer a finance team won't act on.
+            </Feature>
+            <Feature title="Stay in context">
+              The assistant lives inside the platform, next to the data it's talking about.
+            </Feature>
+          </div>
+        </Mid>
+      </Chapter>
+
+      <Chapter
+        label="04 · Asking"
+        title="Start with data, not a blank box."
+        lead="The entry point pairs the files in question with a plain-language prompt — and offers suggested starting actions for the people who don't yet know what to ask."
+      >
+        <AnnotatedFigure
+          src={creoUpload}
+          alt="Creo AI starting screen with annotations"
+          caption="The assistant's entry point — attached data, a plain-language prompt, and suggested ways in."
+          points={[
+            { x: 4.5, y: 19, title: "Inside the product, not beside it", body: "Creo sits in the platform's own navigation, alongside the tools it's answering about. It's another way to use ZenStatement, not a separate tool to learn." },
+            { x: 44, y: 55, title: "The data comes with the question", body: "Files are attached to the prompt itself, so the assistant is always answering about something specific rather than in the abstract." },
+            { x: 45, y: 61, title: "Plain language in", body: "No query syntax, no filter builder. The user writes the sentence they'd say out loud." },
+            { x: 61, y: 67, title: "A way in for the blank page", body: "Suggested actions give first-time users a starting move — the hardest part of any prompt box is knowing what it can do." },
+          ]}
+        />
+      </Chapter>
+
+      <Chapter
+        label="05 · Context"
+        title="Knowing which customer you're talking about."
+        lead="This was the hardest design problem in the project, and the one that decided whether people would trust it."
+      >
+        <AnnotatedFigure
+          reverse
+          src={creoThinking}
+          alt="Creo AI working on a reconciliation question, with annotations"
+          caption="The thread keeps a question, its data, and its answer together — and its context bounded."
+          points={[
+            { x: 34, y: 14, title: "One question, one thread", body: "Each conversation is named and kept, so a question and everything it produced stay together." },
+            { x: 88, y: 30, title: "The data stays pinned", body: "The files sit with the question in the thread, so there's never ambiguity about what an answer is based on." },
+            { x: 32, y: 46, title: "Honest about the wait", body: "Reconciliation isn't instant. A visible working state is better than a frozen screen pretending otherwise." },
+            { x: 61, y: 94, title: "Limits stated plainly", body: "The assistant says it can make mistakes and asks to be reviewed. Under-promising is what makes the rest credible." },
+          ]}
+        />
+
+        <div className="mt-16">
+          <Callout eyebrow="Key decision" title="Context should switch when the subject switches.">
+            A conversation about one customer that drifts into a question about another is where assistants quietly go
+            wrong — carrying the first customer's data into the second customer's answer. Confidently, and invisibly.
+            <br /><br />
+            So context is scoped to the subject being discussed rather than to the whole conversation. When the subject
+            changes, the assistant drops what no longer applies instead of blending it in. Less carry-over, fewer
+            confident-sounding wrong answers — and in reconciliation, a wrong answer that <em>looks</em> right is worse
+            than no answer at all.
+          </Callout>
+        </div>
+      </Chapter>
+
+      <Chapter
+        label="06 · Answers"
+        title="Explain it, then show it."
+        lead="Answers lead with a plain sentence about what's being shown, then the artifact itself — so the user reads the conclusion before interpreting the picture."
+      >
+        <AnnotatedFigure
+          src={creoChart}
+          alt="Creo AI returning a comparison chart, with annotations"
+          caption="A follow-up question, answered as a chart the user can read, keep, and check."
+          points={[
+            { x: 78, y: 24, title: "Follow-ups build on the thread", body: "The next question refines the last one. Users don't restate what they've already established." },
+            { x: 40, y: 34, title: "Says what it's showing first", body: "A sentence of plain language before the visual — the user knows what they're looking at before they look." },
+            { x: 75, y: 51, title: "Two systems, one picture", body: "Reconciliation is a comparison. Showing both sources on one axis is the whole point of the answer." },
+            { x: 52, y: 65, title: "Answers as artifacts", body: "Output is a real chart, not a paragraph describing one — something a user can read, keep, and act on." },
+          ]}
+        />
+      </Chapter>
+
+      <Chapter
+        label="07 · Impact"
+        title="What the work set out to change."
+        lead="Creo is a live product under NDA, so I won't publish results I can't show you the data for. These are the outcomes the design was built to move."
+      >
+        <KpiBand
+          items={[
+            { label: "Answers without navigation", sub: "Ask directly instead of learning where to look." },
+            { label: "Fewer wrong-context answers", sub: "Context scoped to the subject, not the whole thread." },
+            { label: "Insight beyond the analyst", sub: "People who know finance, not the product, can still ask." },
+            { label: "Trust in the output", sub: "Answers arrive with the data and the reasoning attached." },
+          ]}
+        />
+      </Chapter>
+
+      <NdaNote>
+        This case study showcases only a limited portion of the work due to a strict NDA. If you'd like to learn more
+        about my role, process, or design decisions, feel free to connect.
+      </NdaNote>
+    </article>
+  );
+}
+
 // ─── Page wrapper ────────────────────────────────────────────────────────────
 
 const DETAILS: Record<string, () => JSX.Element> = {
   maxyfi: MaxyfiDetail,
   zenstatement: ZenStatementDetail,
   "debt-collection": DebtCollectionDetail,
+  creo: CreoDetail,
 };
 
 const SECTION_LABELS: Record<string, string[]> = {
@@ -1246,6 +1452,10 @@ const SECTION_LABELS: Record<string, string[]> = {
   "debt-collection": [
     "01 · Overview", "02 · Problem & objectives", "03 · Approach",
     "04 · Solution — Debtor Overview", "05 · Solution — Debtor Portal", "06 · Impact",
+  ],
+  creo: [
+    "01 · Overview", "02 · The problem", "03 · Approach", "04 · Asking",
+    "05 · Context", "06 · Answers", "07 · Impact",
   ],
 };
 

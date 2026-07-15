@@ -31,6 +31,11 @@ export default defineConfig({
     },
   },
 
+  // Honour a PORT assigned by the environment; fall back to Vite's default.
+  server: {
+    port: Number(process.env.PORT) || 5173,
+  },
+
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
 })
