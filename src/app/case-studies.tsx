@@ -3,7 +3,6 @@ import { ArrowLeft, ArrowUpRight, Check, List, Lock } from "lucide-react";
 import { Reveal, useScrollSpy } from "./lib/motion";
 import { PROFILE } from "./lib/content";
 
-import maxyfiCover from "@/assets/case-studies/maxyfi-cover.png";
 import zenDashboard from "@/assets/case-studies/zen-dashboard.jpg";
 import zenTransactions from "@/assets/case-studies/zen-transactions.jpg";
 import zenCustomer from "@/assets/case-studies/zen-customer.jpg";
@@ -15,6 +14,12 @@ import maxyfiCompleted from "@/assets/case-studies/maxyfi-completed.jpg";
 import creoUpload from "@/assets/case-studies/creo-upload.png";
 import creoThinking from "@/assets/case-studies/creo-thinking.png";
 import creoChart from "@/assets/case-studies/creo-chart.png";
+
+// Card cover art — 1440×756 (40:21), matching the Work card's cover aspect exactly.
+import coverZenstatement from "@/assets/case-studies/cover-zenstatement.webp";
+import coverCreo from "@/assets/case-studies/cover-creo.webp";
+import coverDebtCollection from "@/assets/case-studies/cover-debt-collection.webp";
+import coverMaxyfi from "@/assets/case-studies/cover-maxyfi.webp";
 
 const serif = { fontFamily: "'Lora', serif" } as const;
 const mono = { fontFamily: "'JetBrains Mono', monospace" } as const;
@@ -35,7 +40,7 @@ export const CASE_STUDIES = [
     team: "Sole designer · 8 eng",
     outcomes: ["Single source of truth", "Exceptions surfaced first", "Guided customer setup"],
     skills: ["User Research", "Information Architecture", "Data Tables", "Design System"],
-    image: zenDashboard,
+    image: coverZenstatement,
   },
   {
     id: 2,
@@ -50,7 +55,7 @@ export const CASE_STUDIES = [
     team: "",
     outcomes: ["Ask instead of dig", "Context-aware answers", "Answers you can check"],
     skills: ["Conversation Design", "AI UX", "Interaction Design", "Data Visualisation"],
-    image: creoChart,
+    image: coverCreo,
   },
   {
     id: 3,
@@ -65,7 +70,7 @@ export const CASE_STUDIES = [
     team: "Sole designer · 1 PM · 5 eng",
     outcomes: ["One view of every debtor", "Self-serve debtor payments", "Compliance-aware workflows"],
     skills: ["Product Design", "Interaction Design", "Data Dashboards", "Payments UX"],
-    image: debtOverview,
+    image: coverDebtCollection,
   },
   {
     id: 4,
@@ -80,7 +85,7 @@ export const CASE_STUDIES = [
     team: "Sole designer · 5 eng",
     outcomes: ["4 → 1 flows unified", "~35% fewer taps", "Field-ready mobile app"],
     skills: ["Mobile Design", "IA & Flows", "Interaction Design", "Design System"],
-    image: maxyfiCover,
+    image: coverMaxyfi,
   },
 ];
 

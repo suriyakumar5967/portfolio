@@ -18,8 +18,8 @@ function WorkCard({ cs, index, onOpen }: { cs: CaseStudySummary; index: number; 
         onMouseLeave={() => setHover(false)}
         className="group relative flex flex-col h-full bg-card border border-border rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:shadow-soft-xl hover:border-primary/30"
       >
-        {/* Cover */}
-        <div className="relative h-56 overflow-hidden bg-muted flex-shrink-0">
+        {/* Cover — 40:21 matches the artwork, so the logo and title are never cropped. */}
+        <div className="relative aspect-[40/21] overflow-hidden bg-muted flex-shrink-0">
           <img
             src={cs.image}
             alt={`${cs.title} — ${cs.subtitle}`}
@@ -27,7 +27,8 @@ function WorkCard({ cs, index, onOpen }: { cs: CaseStudySummary; index: number; 
             className={`w-full h-full object-cover transition-transform duration-[900ms] ease-out ${hover ? "scale-105" : "scale-100"}`}
           />
           <div className={`absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-70"}`} />
-          <div className="absolute top-4 left-4">
+          {/* Right-aligned: the cover art carries its own brand mark top-left. */}
+          <div className="absolute top-4 right-4">
             <span className="px-3 py-1 bg-background/90 backdrop-blur-sm rounded-full text-xs font-semibold border border-border/50">{cs.industry}</span>
           </div>
           <div className={`absolute bottom-4 right-4 flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-xs font-semibold shadow-lg transition-all duration-300 ${hover ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>

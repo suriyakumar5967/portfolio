@@ -1,11 +1,11 @@
 // Portfolio content — grounded only in what is real (the two shipped case studies).
 // No invented years, companies, client counts, or awards.
 
-import altimetrikLogo from "@/assets/companies/altimetrik.jpg";
+import altimetrikLogo from "@/assets/companies/altimetrik.svg";
 import maxyfiLogo from "@/assets/companies/maxyfi.svg";
 import zenstatementLogo from "@/assets/companies/zenstatement.svg";
 
-import figmaAi from "@/assets/ai-logos/figma.svg";
+import heygenAi from "@/assets/ai-logos/heygen.svg";
 import canvaAi from "@/assets/ai-logos/canva.svg";
 import claudeAi from "@/assets/ai-logos/claude.svg";
 import notionAi from "@/assets/ai-logos/notion.svg";
@@ -80,7 +80,7 @@ export const SKILL_GROUPS = [
 // NOTE: "Gemini" and "Bolt" are best-guess names for the two unlabelled SVGs
 // (a "G" lettermark and a sail/"B" mark) — confirm and I'll fix the alt text.
 export const AI_LOGOS = [
-  { name: "Figma", src: figmaAi },
+  { name: "HeyGen", src: heygenAi },
   { name: "Canva", src: canvaAi },
   { name: "Claude", src: claudeAi },
   { name: "Notion", src: notionAi },

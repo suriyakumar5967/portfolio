@@ -260,8 +260,16 @@ function Experience() {
                   {/* Card */}
                   <div className="rounded-3xl border border-border bg-card p-6 md:p-7 shadow-soft-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg hover:border-foreground/15">
                     <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
-                      <span className="inline-flex items-center h-10 px-3 rounded-xl bg-white border border-black/5 shadow-soft-sm">
-                        <img src={item.logo} alt={item.company} className="h-4 sm:h-[18px] w-auto max-w-[140px] object-contain" />
+                      {/* Fixed-height box + object-contain: every logo lands on the same
+                          baseline at the same cap-height, whatever its native ratio.
+                          Brand colours in light; inverted to white in dark (as the AI wall). */}
+                      <span className="inline-flex items-center h-7">
+                        <img
+                          src={item.logo}
+                          alt={item.company}
+                          loading="lazy"
+                          className="h-[17px] sm:h-[19px] w-auto max-w-[136px] object-contain object-left opacity-90 dark:brightness-0 dark:invert dark:opacity-90"
+                        />
                       </span>
                       <span className="font-mono text-xs text-muted-foreground tracking-wide">{item.period}</span>
                     </div>
