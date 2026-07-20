@@ -16,6 +16,7 @@ import creoThinking from "@/assets/case-studies/creo-thinking.png";
 import creoChart from "@/assets/case-studies/creo-chart.png";
 
 // Card cover art — 1440×756 (40:21), matching the Work card's cover aspect exactly.
+import coverNasdaq from "@/assets/case-studies/cover-nasdaq.webp";
 import coverZenstatement from "@/assets/case-studies/cover-zenstatement.webp";
 import coverCreo from "@/assets/case-studies/cover-creo.webp";
 import coverDebtCollection from "@/assets/case-studies/cover-debt-collection.webp";
@@ -27,6 +28,21 @@ const mono = { fontFamily: "'JetBrains Mono', monospace" } as const;
 // ─── Card summaries (used in the "Selected work" grid) ───────────────────────
 
 export const CASE_STUDIES = [
+  {
+    id: 0,
+    slug: "nasdaq-calypso",
+    title: "Nasdaq Calypso",
+    subtitle: "Reporting service — capital markets",
+    summary:
+      "Modernising the reporting experience of a legacy capital-markets platform used by risk, operations, compliance, and finance teams — reducing friction for expert users without taking away the control they rely on.",
+    industry: "Capital Markets · NDA",
+    role: "Product Designer",
+    timeline: "Confidential",
+    team: "",
+    outcomes: ["Modernised legacy UX", "Faster access to data", "Design system contributions"],
+    skills: ["Information Architecture", "Enterprise UX", "Design Systems", "Data-Heavy UI"],
+    image: coverNasdaq,
+  },
   {
     id: 1,
     slug: "zenstatement",
@@ -240,8 +256,9 @@ function CaseHero({
   title: React.ReactNode;
   lead: string;
   meta: { label: string; value: string; sub?: string }[];
-  image: string;
-  imageAlt: string;
+  /** Optional — NDA work may have no publishable screen. */
+  image?: string;
+  imageAlt?: string;
 }) {
   return (
     <header className="pt-[60px]">
@@ -268,7 +285,7 @@ function CaseHero({
         </div>
       </div>
 
-      <Figure src={image} alt={imageAlt} />
+      {image && <Figure src={image} alt={imageAlt ?? ""} />}
     </header>
   );
 }
@@ -1770,6 +1787,245 @@ function CreoDetail() {
   );
 }
 
+// ─── Nasdaq Calypso (NDA) ────────────────────────────────────────────────────
+// No screens, no client detail, no internal metrics. Role, approach, and
+// challenges only — everything here is safe to publish.
+
+function NasdaqDetail() {
+  return (
+    <article>
+      <CaseHero
+        eyebrow="UX Case Study · Capital Markets · NDA"
+        title={<>Making a complex platform <em className="italic font-normal text-primary">easier to work in.</em></>}
+        lead="Calypso is a long-standing capital-markets platform used by expert teams in risk, operations, compliance, and finance. I worked on modernising its reporting experience — so people could find and trust the data they needed without fighting the interface."
+        meta={[
+          { label: "Role", value: "Product Designer" },
+          { label: "Domain", value: "Capital Markets", sub: "Risk · Ops · Compliance" },
+          { label: "Platform", value: "Web", sub: "Enterprise" },
+          { label: "Focus", value: "Reporting", sub: "Legacy modernisation" },
+          { label: "Team", value: "PM · Eng · BA · QA" },
+          { label: "Disclosure", value: "Under NDA", sub: "No screens shown" },
+        ]}
+      />
+
+      <Chapter label="01 · A note on confidentiality" title="What I can and can't show.">
+        <Mid>
+          <div className="rounded-2xl border border-border bg-muted/40 p-6 md:p-8">
+            <div className="flex items-center gap-2.5">
+              <span className="grid place-items-center w-7 h-7 rounded-full bg-primary/10 text-primary shrink-0">
+                <Lock size={13} aria-hidden />
+              </span>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>
+                Confidential project
+              </span>
+            </div>
+            <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed mt-4">
+              This work is covered by a strict NDA. There are no product screens, client details, internal workflows,
+              performance figures, or technical architecture on this page — and there won't be.
+            </p>
+            <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed mt-4">
+              What follows is limited to my own role, how I approached the problem, the constraints I designed within,
+              and what I took away from it. Happy to talk through the thinking in more depth in conversation.
+            </p>
+          </div>
+        </Mid>
+      </Chapter>
+
+      <Chapter label="02 · Overview" title="A specialist tool, used all day, by people who know it well.">
+        <Narrow>
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            Calypso is a legacy platform used across capital markets. The people using it are experts — risk analysts,
+            operations teams, compliance officers, finance staff — and they work with very large, connected sets of
+            data where being accurate matters more than anything.
+          </p>
+          <p className="text-muted-foreground leading-relaxed mt-5">
+            These aren't casual users. They know the domain deeply and often know the product's quirks by heart. The
+            problem wasn't that the software was too advanced for them. It was that everyday tasks took more effort
+            than they should — finding the right report, narrowing a large dataset, moving between related records.
+          </p>
+          <p className="text-muted-foreground leading-relaxed mt-5">
+            The goal was never to simplify the domain. Financial reporting is genuinely complex, and hiding that would
+            make the product worse. The goal was to remove the friction sitting on top of it.
+          </p>
+        </Narrow>
+      </Chapter>
+
+      <Chapter label="03 · My role" title="Product Designer on the reporting experience.">
+        <Mid>
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>What I owned</span>
+              <p className="text-[15px] text-muted-foreground leading-relaxed mt-3">
+                The end-to-end design of reporting experiences — from understanding how a task actually worked today,
+                through to the detailed screens engineering built from.
+              </p>
+            </div>
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>Who I worked with</span>
+              <p className="text-[15px] text-muted-foreground leading-relaxed mt-3">
+                A product manager, engineers, business analysts, QA, and business stakeholders — with the analysts and
+                stakeholders as my main route to understanding how the work is really done.
+              </p>
+            </div>
+          </div>
+        </Mid>
+      </Chapter>
+
+      <Chapter label="04 · What I worked on" title="The main areas of the work.">
+        <Mid>
+          <div className="grid sm:grid-cols-2 gap-x-12 gap-y-7">
+            <Feature title="Modernising a legacy experience">
+              Bringing an older interface up to current standards without disrupting the way experienced users already
+              work.
+            </Feature>
+            <Feature title="Improving reporting workflows">
+              Reworking existing reporting journeys, and designing new capability where something was missing.
+            </Feature>
+            <Feature title="Information architecture">
+              Reorganising how information is grouped and labelled, so people can predict where things live.
+            </Feature>
+            <Feature title="Navigation, filtering & search">
+              Making it faster to narrow down a large dataset and move between connected records.
+            </Feature>
+            <Feature title="Design system collaboration">
+              Working closely with the design system team — using existing components, and feeding back where reporting
+              needed something the library didn't yet cover.
+            </Feature>
+            <Feature title="Reviews & implementation support">
+              Design reviews, usability discussions, and staying close to engineering through build.
+            </Feature>
+          </div>
+        </Mid>
+      </Chapter>
+
+      <Chapter
+        label="05 · Design challenges"
+        title="The constraints that shaped every decision."
+        lead="Most of the difficulty here wasn't visual. It came from designing inside real limits that couldn't be wished away."
+      >
+        <Mid>
+          <NumberList
+            items={[
+              {
+                n: "01",
+                title: "Complexity that has to stay",
+                body: "Regulated financial work needs detail, precision, and an audit trail. Stripping things back to look cleaner would have removed something people depend on.",
+              },
+              {
+                n: "02",
+                title: "Very large, connected datasets",
+                body: "Screens have to stay readable and quick when the underlying data is huge and every record links to others.",
+              },
+              {
+                n: "03",
+                title: "Several different user roles",
+                body: "Risk, operations, compliance, and finance all need different things from the same product — without it fragmenting into four products.",
+              },
+              {
+                n: "04",
+                title: "Legacy technical limits",
+                body: "Some ideas simply weren't feasible in an established system. Designs had to be realistic about what could actually ship.",
+              },
+              {
+                n: "05",
+                title: "Experts don't want to relearn",
+                body: "For daily users, an unfamiliar interface is a cost, not a gift. Changes had to feel like an improvement, not a reset.",
+              },
+            ]}
+          />
+        </Mid>
+      </Chapter>
+
+      <Chapter label="06 · Approach & collaboration" title="Understand the work first, then design.">
+        <Mid>
+          <Steps
+            items={[
+              { n: "01", title: "Learn the real workflow", body: "Time with business analysts and stakeholders to understand how tasks are genuinely performed — including the workarounds people had built." },
+              { n: "02", title: "Find the friction", body: "Separating what was hard because finance is hard from what was hard because of the interface. Only the second kind was mine to fix." },
+              { n: "03", title: "Design and review", body: "Working through flows and screens with the PM and engineering, testing ideas against real constraints early rather than late." },
+              { n: "04", title: "Systematise", body: "Turning repeated solutions into shared patterns, so the product stayed consistent as more of it was modernised." },
+              { n: "05", title: "Support the build", body: "Staying available through implementation and QA to resolve the details that only surface once something is real." },
+            ]}
+          />
+
+          <div className="mt-16">
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>Working with the design system team</span>
+            <div className="mt-5 flex flex-col gap-5">
+              <p className="text-[15px] text-muted-foreground leading-relaxed">
+                A lot of this work happened alongside the design system team rather than separately from it. Reporting
+                touches a huge amount of the product, so almost every screen was an opportunity to either reuse
+                something that already existed or improve it for everyone.
+              </p>
+              <p className="text-[15px] text-muted-foreground leading-relaxed">
+                In practice that meant three things: building from the existing component library wherever it fit,
+                raising cases where a reporting need wasn't covered yet, and helping shape those components so they
+                worked beyond my own screens. Data-heavy interfaces put real pressure on a design system — tables,
+                filters, and dense layouts expose gaps that simpler pages never do.
+              </p>
+              <p className="text-[15px] text-muted-foreground leading-relaxed">
+                Designing <em>with</em> the system instead of around it kept the product coherent, avoided one-off
+                solutions that quietly become debt, and meant improvements made for reporting were available to every
+                other team too.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-12">
+            <Callout eyebrow="The principle" title="Reduce friction, not capability.">
+              The people using Calypso are experts doing precise work. My job wasn't to make the product look simple —
+              it was to make the path to the right answer shorter, while keeping the accuracy, speed, and control they
+              rely on completely intact.
+            </Callout>
+          </div>
+        </Mid>
+      </Chapter>
+
+      <Chapter label="07 · Impact & learnings" title="What changed, and what I took from it.">
+        <Mid>
+          <LabeledList
+            label="At a high level"
+            items={[
+              "A more modern, consistent reporting experience within a long-established platform",
+              "Clearer structure and navigation for finding data across large, connected sets",
+              "Contributions back to the shared design system, benefiting teams beyond reporting",
+              "Design decisions grounded in how expert users actually work, not assumptions about them",
+            ]}
+          />
+          <div className="mt-14">
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>What I learned</span>
+            <div className="mt-5 flex flex-col gap-5">
+              <p className="text-[15px] text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Expert users change the brief.</strong> The usual instinct — fewer
+                options, less on screen — can actively harm people who need density and control. The better question is
+                whether the complexity is <em>doing work</em> for them, or just sitting in the way.
+              </p>
+              <p className="text-[15px] text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Legacy constraints are part of the design problem.</strong> A
+                solution that can't be built in the system that exists isn't a solution. Working closely with engineers
+                early made the designs better, not smaller.
+              </p>
+              <p className="text-[15px] text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Consistency compounds.</strong> In a product this large, a reusable
+                pattern is worth more than a perfect one-off screen.
+              </p>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed mt-12 pt-6 border-t border-border">
+            <strong className="text-foreground">On results:</strong> this is confidential, ongoing work, so there are no
+            published metrics here. I've described the design intent and what shaped it rather than claiming outcomes I
+            can't evidence.
+          </p>
+        </Mid>
+      </Chapter>
+
+      <NdaNote>
+        This project is protected under a strict NDA, so only a limited, high-level view of the work is shown. If
+        you'd like to learn more about my role, process, or design decisions, feel free to connect.
+      </NdaNote>
+    </article>
+  );
+}
+
 // ─── Page wrapper ────────────────────────────────────────────────────────────
 
 const DETAILS: Record<string, () => JSX.Element> = {
@@ -1777,9 +2033,14 @@ const DETAILS: Record<string, () => JSX.Element> = {
   zenstatement: ZenStatementDetail,
   "debt-collection": DebtCollectionDetail,
   creo: CreoDetail,
+  "nasdaq-calypso": NasdaqDetail,
 };
 
 const SECTION_LABELS: Record<string, string[]> = {
+  "nasdaq-calypso": [
+    "01 · A note on confidentiality", "02 · Overview", "03 · My role", "04 · What I worked on",
+    "05 · Design challenges", "06 · Approach & collaboration", "07 · Impact & learnings",
+  ],
   maxyfi: [
     "01 · Problem & context", "02 · Goals, users & constraints", "03 · Research & insights",
     "04 · User flow", "05 · Product walkthrough", "06 · Key UX decisions",

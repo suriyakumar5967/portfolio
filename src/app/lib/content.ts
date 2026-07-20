@@ -41,12 +41,11 @@ export const ABOUT_INTRO = [
 ];
 
 // Experience — the real, shipped work (most recent first).
-// NOTE: Altimetrik role/dates/description are placeholders — confirm the real details.
 export const EXPERIENCE = [
   {
     company: "Altimetrik",
     logo: altimetrikLogo,
-    role: "Product Designer",
+    role: "Senior Engineer — Digital Experience Design",
     period: "Nov 2025 — Present",
     impact:
       "Designing product experiences for enterprise clients — partnering closely with product and engineering teams to take complex, data-heavy tools from problem framing through to polished, shipped UI.",
@@ -54,7 +53,7 @@ export const EXPERIENCE = [
   {
     company: "ZenStatement",
     logo: zenstatementLogo,
-    role: "Product Designer",
+    role: "Founding Product Designer",
     period: "Sep 2024 — Nov 2025",
     impact:
       "Designed the reconciliation experience end-to-end — turning spreadsheet matching of thousands of transactions into a dashboard that leads with the exceptions that matter.",
@@ -62,7 +61,7 @@ export const EXPERIENCE = [
   {
     company: "Maxyfi",
     logo: maxyfiLogo,
-    role: "Product Designer",
+    role: "Product Designer (Founding Team)",
     period: "Jan 2022 — Sep 2024",
     impact:
       "Brought a dense desktop collections workflow to a mobile field-agent app — fewer taps, a clear daily agenda, and real-time status managers can trust.",
