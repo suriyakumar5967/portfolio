@@ -738,6 +738,118 @@ function Callout({ eyebrow = "Key decision", title, children }: { eyebrow?: stri
   );
 }
 
+/** Two-column scope contrast — what a system does vs. what it deliberately doesn't. */
+function DoesDont({ does, dont }: { does: string[]; dont: string[] }) {
+  return (
+    <Mid>
+      <div className="grid md:grid-cols-2 gap-6">
+        {[
+          { label: "What Creo does", items: does, tone: "yes" as const },
+          { label: "What Creo doesn't do", items: dont, tone: "no" as const },
+        ].map((col) => (
+          <div key={col.label} className="rounded-2xl border border-border bg-card p-6 md:p-7">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-primary" style={mono}>{col.label}</span>
+            <ul className="mt-4 flex flex-col gap-3">
+              {col.items.map((it, i) => (
+                <li key={i} className="flex gap-3 text-[15px] text-muted-foreground leading-relaxed">
+                  <span aria-hidden className={`mt-[7px] shrink-0 ${col.tone === "yes" ? "w-3.5 h-[2px] bg-primary" : "w-3.5 h-[2px] bg-muted-foreground/40"}`} />
+                  <span>{it}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </Mid>
+  );
+}
+
+/**
+ * Visible gap marker. Deliberately loud — an unfilled placeholder should be
+ * impossible to publish by accident.
+ */
+function Ph({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="inline-flex items-center rounded px-1.5 py-0.5 mx-0.5 text-[0.85em] font-semibold bg-amber-400/15 text-amber-700 dark:text-amber-300 border border-amber-500/30"
+      style={mono}
+      title="Placeholder — replace with real detail"
+    >
+      {children}
+    </span>
+  );
+}
+
+/** Research finding → what it changed → what it would have cost to ignore. */
+function Insight({ n, insight, implication, risk }: {
+  n: string; insight: string; implication: string; risk: string;
+}) {
+  const rows = [
+    { k: "Insight", v: insight, tone: "text-foreground" },
+    { k: "Design implication", v: implication, tone: "text-muted-foreground" },
+    { k: "Risk if ignored", v: risk, tone: "text-muted-foreground" },
+  ];
+  return (
+    <div className="rounded-2xl border border-border bg-card p-6 md:p-7">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>{n}</span>
+      <div className="mt-4 flex flex-col gap-4">
+        {rows.map((r) => (
+          <div key={r.k}>
+            <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70" style={mono}>{r.k}</span>
+            <p className={`text-[15px] leading-relaxed mt-1 ${r.tone}`}>{r.v}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Edge case → what the system can determine → what still needs a person. */
+function EdgeCases({ items }: { items: { c: string; sys: string; analyst: string }[] }) {
+  return (
+    <Wide>
+      <div className="rounded-2xl border border-border overflow-hidden">
+        <div className="hidden md:grid md:grid-cols-[1fr_1.4fr_1.4fr] gap-6 px-6 py-3 bg-muted/60 border-b border-border">
+          {["Edge case", "What the system knows", "What the analyst does"].map((h) => (
+            <span key={h} className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground" style={mono}>{h}</span>
+          ))}
+        </div>
+        {items.map((it, i) => (
+          <div
+            key={it.c}
+            className={`grid md:grid-cols-[1fr_1.4fr_1.4fr] gap-1.5 md:gap-6 px-5 md:px-6 py-4 ${i % 2 ? "bg-muted/25" : "bg-card"} ${i ? "border-t border-border" : ""}`}
+          >
+            <span className="text-[13px] font-bold text-foreground">{it.c}</span>
+            <span className="text-[14px] text-muted-foreground leading-relaxed">{it.sys}</span>
+            <span className="text-[14px] text-muted-foreground leading-relaxed">{it.analyst}</span>
+          </div>
+        ))}
+      </div>
+    </Wide>
+  );
+}
+
+/** State → response pairs. Kept to one line each so the set can be scanned, not read. */
+function StateTable({ items }: { items: { state: string; res: string }[] }) {
+  return (
+    <Mid>
+      <div className="rounded-2xl border border-border overflow-hidden">
+        {items.map((it, i) => (
+          <div
+            key={it.state}
+            className={`grid sm:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] gap-1 sm:gap-6 px-5 sm:px-6 py-4 ${
+              i % 2 ? "bg-muted/30" : "bg-card"
+            } ${i ? "border-t border-border" : ""}`}
+          >
+            <span className="text-[13px] font-bold text-foreground leading-snug">{it.state}</span>
+            <span className="text-[14px] text-muted-foreground leading-relaxed">{it.res}</span>
+          </div>
+        ))}
+      </div>
+    </Mid>
+  );
+}
+
 /**
  * Closing note for NDA-restricted work. Deliberately quiet — it's a boundary,
  * not an apology — and ends on an invitation to talk.
@@ -1301,51 +1413,165 @@ function CreoDetail() {
         imageAlt="Creo AI — the assistant's starting screen inside ZenStatement"
       />
 
-      <Chapter label="01 · Overview" title="An assistant that already knows the books.">
-        <Narrow>
-          <div className="flex flex-col gap-5">
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              ZenStatement reconciles thousands of transactions across systems. The data was all there — but getting a
-              specific answer out of it still meant knowing where to look, which filters to set, and how to read what
-              came back.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              Creo closes that gap. It understands the reconciliation context a user is working in, so a question asked
-              in ordinary words returns a relevant, data-backed answer instead of a search result.
-            </p>
-          </div>
-        </Narrow>
-      </Chapter>
-
-      <Chapter label="02 · The problem" title="The answer existed. Getting to it didn't scale.">
-        <Statement>
-          Every question meant navigating the product first and thinking about the finance second — so the people who
-          most needed answers were the ones least likely to go get them.
-        </Statement>
+      <Chapter label="01 · Summary" title="The data was there. Reaching it required knowing the product.">
+        <Mid>
+          <dl className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+            {[
+              {
+                t: "Business problem",
+                d: "Finance teams already had the data. Retrieving an answer meant knowing the product's navigation, its filters, and its terminology — so product fluency, not financial expertise, decided who could get an answer.",
+              },
+              {
+                t: "My role",
+                d: "Product Designer — conversation design, AI interaction patterns, the trust model, interface design, and the working relationship with product and engineering.",
+              },
+              {
+                t: "Core decision",
+                d: "Scope the assistant's context to the active customer or subject, rather than to the entire conversation.",
+              },
+              {
+                t: "Value",
+                d: "Finance users can ask operational questions directly, with a lower risk of confident answers built on the wrong context.",
+              },
+            ].map((x) => (
+              <div key={x.t}>
+                <dt className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>{x.t}</dt>
+                <dd className="text-[15px] text-muted-foreground leading-relaxed mt-2.5">{x.d}</dd>
+              </div>
+            ))}
+          </dl>
+        </Mid>
+        <div className="mt-14">
+          <Statement>
+            Every question meant navigating the product first and thinking about the finance second — so the people who
+            most needed answers were the least likely to go get them.
+          </Statement>
+        </div>
       </Chapter>
 
       <Chapter
-        label="03 · Approach"
-        title="Design the conversation, not the chatbot."
-        lead="A text box is easy to draw and hard to make useful. Most of the work went into the surrounding decisions — what to offer before someone types, what to show while they wait, and how much of the answer to expose so it can be trusted."
+        label="02 · Background"
+        title="Where this started."
+        lead="ZenStatement matches thousands of transactions across systems every day. The numbers were all there — but getting one specific answer out meant opening the right screen, setting the right filters, and knowing what the product called things."
       >
+        {/* Mid (not Narrow) so the body's left edge lines up with the title and lead. */}
         <Mid>
-          <div className="grid sm:grid-cols-3 gap-x-10 gap-y-8">
-            <Feature title="Reduce the blank page">
-              A prompt box with no starting point puts the burden on the user. Give them a way in.
-            </Feature>
-            <Feature title="Show the working">
-              An answer you can't verify is an answer a finance team won't act on.
-            </Feature>
-            <Feature title="Stay in context">
-              The assistant lives inside the platform, next to the data it's talking about.
-            </Feature>
-          </div>
+          <p className="text-muted-foreground leading-relaxed max-w-3xl">
+            So the people who understood the finance best were often not the people who could get an answer fastest.
+            Questions queued behind whoever knew the tool.
+          </p>
         </Mid>
       </Chapter>
 
       <Chapter
-        label="04 · Asking"
+        label="03 · Goals & people"
+        title="Who it's for, and what it had to do for them."
+      >
+        <Personas
+          items={[
+            {
+              tag: "Finance & ops teams",
+              initials: "FO",
+              title: "Know the money, not the menus",
+              body: "They read a reconciliation instantly but don't use the platform daily — so they wait on someone else for answers they could interpret themselves.",
+            },
+            {
+              tag: "Platform power users",
+              initials: "PU",
+              title: "The bottleneck by default",
+              body: "Fluent in the product, so every question routes to them. Their time goes on fetching data rather than judging it.",
+            },
+          ]}
+        />
+
+        <div className="mt-16">
+          <Mid>
+            <div className="grid md:grid-cols-2 gap-x-12 gap-y-10">
+              <LabeledList
+                label="What was getting in the way"
+                items={[
+                  "Answers required knowing the product's menus, filters, and wording",
+                  "Simple questions became requests to another person, and waited",
+                  "Comparing two systems meant building the view by hand each time",
+                  "No quick way to sanity-check a number",
+                ]}
+              />
+              <LabeledList
+                label="What it had to do"
+                items={[
+                  "Take a question in plain English — no filters, no menu paths",
+                  "Show the data behind every answer, so it can be checked",
+                  "Ask when the customer or period is unclear, never guess",
+                  "Live inside ZenStatement, next to the data",
+                ]}
+              />
+            </div>
+          </Mid>
+        </div>
+
+        <div className="mt-16">
+          <Mid>
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>Three things that shaped it</span>
+          </Mid>
+          <div className="mt-6">
+            <NumberList
+              items={[
+                {
+                  n: "01",
+                  title: "The barrier was vocabulary, not data",
+                  body: "People weren't missing information. They were missing the words the product wanted. That pointed at plain language as the interface — not better filters.",
+                },
+                {
+                  n: "02",
+                  title: "A wrong answer costs more than a slow one",
+                  body: "A confident answer about the wrong customer is worse than no answer. So: show your source, or say you don't have one.",
+                },
+                {
+                  n: "03",
+                  title: "People switch subjects mid-conversation",
+                  body: "Real questions jump between customers and periods without warning. Designing for a tidy single-topic chat would have broken on day one.",
+                },
+              ]}
+            />
+          </div>
+          <Mid>
+            <p className="text-sm text-muted-foreground leading-relaxed mt-10 pt-6 border-t border-border">
+              <strong className="text-foreground">Where this came from:</strong> no formal user study was run for this
+              feature. These came from the reconciliation workflow itself, how the product was already used, and
+              conversations with product and engineering — not from research I didn't do.
+            </p>
+          </Mid>
+        </div>
+      </Chapter>
+
+      <Chapter
+        label="04 · What it does"
+        title="And what it deliberately doesn't."
+        lead="An assistant that tries anything is one nobody can rely on. Naming the limits was a design decision, not an apology."
+      >
+        <DoesDont
+          does={[
+            "Answers questions about reconciliation data in plain language",
+            "Compares figures across systems and periods",
+            "Builds charts and summaries a person can read and check",
+          ]}
+          dont={[
+            "Make the final financial decision",
+            "Answer without evidence behind it",
+            "Quietly assume which customer or period you meant",
+          ]}
+        />
+        <div className="mt-12">
+          <Callout eyebrow="Where the human stays" title="Review is part of the job, not a disclaimer.">
+            Creo helps you decide; it doesn't decide. Anything that closes a book or goes to an auditor stays with the
+            person accountable for it — and the product says so on screen, telling users plainly that it can make
+            mistakes and asking them to check before acting.
+          </Callout>
+        </div>
+      </Chapter>
+
+      <Chapter
+        label="05 · Asking"
         title="Start with data, not a blank box."
         lead="The entry point pairs the files in question with a plain-language prompt — and offers suggested starting actions for the people who don't yet know what to ask."
       >
@@ -1363,10 +1589,56 @@ function CreoDetail() {
       </Chapter>
 
       <Chapter
-        label="05 · Context"
+        label="06 · The context decision"
         title="Knowing which customer you're talking about."
-        lead="This was the hardest design problem in the project, and the one that decided whether people would trust it."
+        lead="This was the hardest problem in the project, and the one that decided whether people would trust the output."
       >
+        <Mid>
+          <div className="rounded-2xl border border-border bg-muted/40 p-6 md:p-8">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-primary" style={mono}>The risky scenario</span>
+            <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed mt-3">
+              A user asks about one customer. Satisfied, they ask a follow-up — but about a different customer, without
+              restating it. A thread that keeps everything said so far will quietly fold the first customer's figures
+              into the second customer's answer. The reply looks confident, reads correctly, and is wrong.
+            </p>
+          </div>
+        </Mid>
+
+        <div className="mt-14">
+          <Mid><span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>Options considered</span></Mid>
+          <div className="mt-6">
+            <NumberList
+              items={[
+                {
+                  n: "A",
+                  title: "Persistent thread context",
+                  body: "Everything in the conversation stays available. Follow-ups feel natural and the user repeats less — but the blast radius of a wrong assumption grows with every message, and it fails silently.",
+                },
+                {
+                  n: "B",
+                  title: "Subject-scoped context",
+                  body: "Context is bound to the customer or subject under discussion. When the subject changes, what no longer applies is dropped. Slightly more restating; far less silent contamination.",
+                },
+              ]}
+            />
+          </div>
+        </div>
+
+        <div className="mt-14">
+          <Callout eyebrow="Decision" title="Subject-scoped context — B.">
+            The two options fail differently, and that asymmetry decided it. Option A fails <em>invisibly</em>: nothing
+            in the interface tells you the answer was built on the previous customer. Option B fails <em>visibly</em>:
+            at worst the user restates something the assistant should have inferred, and they can see that it did.
+            <br /><br />
+            In reconciliation, an answer that looks right but isn't is more expensive than a small amount of friction.
+            I optimised for the failure a person can catch.
+          </Callout>
+        </div>
+
+        <div className="mt-16">
+          <Mid><span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary" style={mono}>How the interface carries it</span></Mid>
+        </div>
+        <div className="mt-6">
         <AnnotatedFigure
           reverse
           src={creoThinking}
@@ -1379,22 +1651,11 @@ function CreoDetail() {
             { x: 61, y: 94, title: "Limits stated plainly", body: "The assistant says it can make mistakes and asks to be reviewed. Under-promising is what makes the rest credible." },
           ]}
         />
-
-        <div className="mt-16">
-          <Callout eyebrow="Key decision" title="Context should switch when the subject switches.">
-            A conversation about one customer that drifts into a question about another is where assistants quietly go
-            wrong — carrying the first customer's data into the second customer's answer. Confidently, and invisibly.
-            <br /><br />
-            So context is scoped to the subject being discussed rather than to the whole conversation. When the subject
-            changes, the assistant drops what no longer applies instead of blending it in. Less carry-over, fewer
-            confident-sounding wrong answers — and in reconciliation, a wrong answer that <em>looks</em> right is worse
-            than no answer at all.
-          </Callout>
         </div>
       </Chapter>
 
       <Chapter
-        label="06 · Answers"
+        label="07 · Answers"
         title="Explain it, then show it."
         lead="Answers lead with a plain sentence about what's being shown, then the artifact itself — so the user reads the conclusion before interpreting the picture."
       >
@@ -1412,18 +1673,93 @@ function CreoDetail() {
       </Chapter>
 
       <Chapter
-        label="07 · Impact"
-        title="What the work set out to change."
-        lead="Creo is a live product under NDA, so I won't publish results I can't show you the data for. These are the outcomes the design was built to move."
+        label="08 · Beyond the happy path"
+        title="Most of the design is what happens when it can't answer."
+        lead="A demo only shows the good case. These are the states I specified the assistant has to handle — and what it does in each. The rule throughout: say what's wrong, say what's missing, hand control back."
       >
-        <KpiBand
+        <StateTable
           items={[
-            { label: "Answers without navigation", sub: "Ask directly instead of learning where to look." },
-            { label: "Fewer wrong-context answers", sub: "Context scoped to the subject, not the whole thread." },
-            { label: "Insight beyond the analyst", sub: "People who know finance, not the product, can still ask." },
-            { label: "Trust in the output", sub: "Answers arrive with the data and the reasoning attached." },
+            { state: "Missing or invalid source data", res: "Name the file or field that's unusable and stop. No partial answer built on a broken input." },
+            { state: "Ambiguous question", res: "Ask one clarifying question — usually which customer or period — instead of guessing and sounding certain." },
+            { state: "Unsupported request", res: "Say it's out of scope plainly, and point to where in the product it can be done." },
+            { state: "Slow processing", res: "Show a visible working state. Reconciliation isn't instant, and a frozen screen reads as broken." },
+            { state: "No result", res: "\"Nothing matched\" is an answer. Show the filters applied so the user can widen them." },
+            { state: "Conflicting sources", res: "Surface the disagreement rather than silently picking a winner — the conflict is often the actual finding." },
+            { state: "Wrong output", res: "Every answer keeps its source attached, so a user can check it and see where it went wrong." },
+            { state: "Correction path", res: "The user can narrow the subject or restart clean without losing the thread." },
           ]}
         />
+        <div className="mt-10">
+          <Narrow>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              These are design specifications from my work on the feature, not screens — the error and empty states
+              themselves sit outside what I can publish.
+            </p>
+          </Narrow>
+        </div>
+      </Chapter>
+
+      <Chapter
+        label="09 · Evaluation"
+        title="How I'd know if it worked."
+        lead="A conversational feature can't be judged on clicks. These are the measures I'd hold it to — split honestly by what they'd tell you: quality of the answers, and behaviour of the people using them."
+      >
+        <Mid>
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-10">
+            <LabeledList
+              label="Answer quality"
+              items={[
+                "Wrong-context answer rate — replies built on the wrong customer, file, or period",
+                "Unsupported-answer rate — replies produced without evidence behind them",
+                "Correction or escalation rate — how often a user has to intervene",
+              ]}
+            />
+            <LabeledList
+              label="User behaviour"
+              items={[
+                "Answers completed without navigation — the question resolved without falling back to the UI",
+                "Source-inspection rate — how often users check the data behind an answer",
+                "Time to insight — question asked to answer trusted",
+                "Repeat usage by non-expert users — whether it reached beyond the platform experts",
+              ]}
+            />
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed mt-10 pt-6 border-t border-border">
+            <strong className="text-foreground">Status:</strong> proposed. These are the metrics the design was built
+            to move, not results I'm reporting. Creo is live under NDA and I don't have published numbers to stand
+            behind — so I'd rather show you the measurement thinking than quote a figure I can't evidence.
+          </p>
+        </Mid>
+      </Chapter>
+
+      <Chapter
+        label="10 · My AI workflow"
+        title="I used AI to design an AI feature."
+        lead="Worth stating plainly, since it's the same trust problem I was designing around."
+      >
+        <Mid>
+          <div className="grid sm:grid-cols-3 gap-x-10 gap-y-8">
+            <Feature title="Explore">
+              Claude and Gemini for pressure-testing the conversation model and generating edge cases I hadn't
+              considered — the list in the previous section started this way.
+            </Feature>
+            <Feature title="Prototype">
+              v0, Replit and Bolt for standing up throwaway interactions quickly, to feel a pattern before committing
+              to it in Figma.
+            </Feature>
+            <Feature title="Organise">
+              Notion for synthesis and keeping decisions traceable; Canva and HeyGen for communicating the work.
+            </Feature>
+          </div>
+          <div className="mt-10 rounded-2xl border border-primary/25 bg-primary/[0.06] p-6">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-primary" style={mono}>The review rule</span>
+            <p className="text-[15px] text-muted-foreground leading-relaxed mt-2.5">
+              Generated output was a starting point, never a deliverable. Every edge case was checked against the real
+              product before it earned a place in the spec, and anything I couldn't verify got cut. The same standard I
+              was asking Creo to meet.
+            </p>
+          </div>
+        </Mid>
       </Chapter>
 
       <NdaNote>
@@ -1459,8 +1795,9 @@ const SECTION_LABELS: Record<string, string[]> = {
     "04 · Solution — Debtor Overview", "05 · Solution — Debtor Portal", "06 · Impact",
   ],
   creo: [
-    "01 · Overview", "02 · The problem", "03 · Approach", "04 · Asking",
-    "05 · Context", "06 · Answers", "07 · Impact",
+    "01 · Summary", "02 · Background", "03 · Goals & people", "04 · What it does",
+    "05 · Asking", "06 · The context decision", "07 · Answers",
+    "08 · Beyond the happy path", "09 · Evaluation", "10 · My AI workflow",
   ],
 };
 
