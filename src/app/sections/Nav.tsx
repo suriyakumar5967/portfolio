@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from "react";
+import { useState, useEffect, type CSSProperties } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import SkSvg from "@/imports/SkSvg1/index";
 import { PROFILE } from "../lib/content";
@@ -16,12 +16,27 @@ export function Nav({
   view: "home" | "about" | "case";
 }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const progress = useScrollProgress();
+
+  // Nav floats transparently over the hero, then settles into glass on scroll.
+  // On content pages (about/case) it stays solid so it never clashes with content.
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => { raf = 0; setScrolled(window.scrollY > 12); });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); if (raf) cancelAnimationFrame(raf); };
+  }, []);
+  const solid = view !== "home" || scrolled || open;
   // Include "hero" so nothing is highlighted on the landing section — "Work"
   // only activates once the case-studies section is actually in view.
   const spy = useScrollSpy(view === "home" ? ["hero", "work", "contact"] : []);
   const resumeUrl = PROFILE.resumeUrl;
-  const logoFill = dark ? "#F0EDE4" : "#08083A";
+  const logoFill = dark ? "#F2EFE8" : "#08083A";
 
   const activeId =
     view === "about" ? "about" : view === "home" ? spy : "";
@@ -64,7 +79,11 @@ export function Nav({
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50">
-      <div className="bg-background/70 backdrop-blur-xl border-b border-border">
+      <div className={`transition-[background-color,border-color,backdrop-filter,box-shadow] duration-500 ease-out border-b ${
+        solid
+          ? "bg-background/70 backdrop-blur-xl border-border shadow-soft-sm"
+          : "bg-transparent backdrop-blur-0 border-transparent shadow-none"
+      }`}>
         <div className="max-w-7xl mx-auto px-6 h-[64px] flex items-center justify-between gap-4">
           {/* Left — logo */}
           <button onClick={onHome} aria-label={`${PROFILE.name} — home`} className="flex-shrink-0 rounded-lg hover:opacity-70 transition-opacity">

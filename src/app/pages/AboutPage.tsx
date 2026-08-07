@@ -63,7 +63,7 @@ function Ambient({ reduced }: { reduced: boolean }) {
       <div className="absolute -top-24 -left-24 w-[42vw] h-[42vw] rounded-full blur-[120px] opacity-40"
         style={{ background: "radial-gradient(circle, var(--primary), transparent 62%)", animation: reduced ? undefined : "aurora 20s ease-in-out infinite" }} />
       <div className="absolute top-1/3 -right-24 w-[38vw] h-[38vw] rounded-full blur-[130px] opacity-30"
-        style={{ background: "radial-gradient(circle, #8B7FF0, transparent 62%)", animation: reduced ? undefined : "aurora 26s ease-in-out infinite reverse" }} />
+        style={{ background: "radial-gradient(circle, #9186F2, transparent 62%)", animation: reduced ? undefined : "aurora 26s ease-in-out infinite reverse" }} />
       {/* gradient mesh */}
       <div className="absolute inset-0 opacity-[0.5]"
         style={{ background: "radial-gradient(60% 50% at 20% 10%, var(--accent-soft), transparent 60%), radial-gradient(50% 40% at 85% 30%, var(--accent-soft), transparent 60%)" }} />
@@ -193,7 +193,7 @@ function AboutHero() {
               <div aria-hidden className="absolute -top-10 -right-8 w-32 h-32 rounded-full blur-2xl opacity-50"
                 style={{ background: "radial-gradient(circle, var(--accent), transparent 65%)", animation: reduced ? undefined : "float 9s ease-in-out infinite" }} />
               <div aria-hidden className="absolute -bottom-10 -left-8 w-36 h-36 rounded-full blur-2xl opacity-40"
-                style={{ background: "radial-gradient(circle, #8B7FF0, transparent 65%)", animation: reduced ? undefined : "float 12s ease-in-out infinite reverse" }} />
+                style={{ background: "radial-gradient(circle, #9186F2, transparent 65%)", animation: reduced ? undefined : "float 12s ease-in-out infinite reverse" }} />
               {/* rotating ring */}
               <div aria-hidden className="absolute -inset-5 rounded-[2.6rem] border border-border/50"
                 style={{ animation: reduced ? undefined : "spin-slow 70s linear infinite" }} />

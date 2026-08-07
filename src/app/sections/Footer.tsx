@@ -4,7 +4,7 @@ import SkSvg from "@/imports/SkSvg1/index";
 import { PROFILE } from "../lib/content";
 
 export function Footer({ dark, onNav, onAbout, onTop }: { dark: boolean; onNav: (id: string) => void; onAbout: () => void; onTop: () => void }) {
-  const logoFill = dark ? "#F0EDE4" : "#08083A";
+  const logoFill = dark ? "#F2EFE8" : "#08083A";
   const items: { label: string; onClick: () => void }[] = [
     { label: "About", onClick: onAbout },
     { label: "Work", onClick: () => onNav("work") },

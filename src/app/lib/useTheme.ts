@@ -16,7 +16,7 @@ export function useTheme() {
     document.documentElement.classList.toggle("dark", dark);
     localStorage.setItem(KEY, dark ? "dark" : "light");
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", dark ? "#080810" : "#F5F3EE");
+    if (meta) meta.setAttribute("content", dark ? "#0D0C12" : "#F5F3EE");
   }, [dark]);
 
   const toggle = useCallback(() => setDark((d) => !d), []);

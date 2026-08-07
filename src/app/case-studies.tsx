@@ -22,7 +22,8 @@ import coverCreo from "@/assets/case-studies/cover-creo.webp";
 import coverDebtCollection from "@/assets/case-studies/cover-debt-collection.webp";
 import coverMaxyfi from "@/assets/case-studies/cover-maxyfi.webp";
 
-const serif = { fontFamily: "'Lora', serif" } as const;
+// Unified on Plus Jakarta Sans — `serif` kept as the display alias (no churn at call sites).
+const serif = { fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", letterSpacing: "-0.02em" } as const;
 const mono = { fontFamily: "'JetBrains Mono', monospace" } as const;
 
 // ─── Card summaries (used in the "Selected work" grid) ───────────────────────
@@ -1040,10 +1041,10 @@ function ZenStatementDetail() {
               <strong className="text-foreground">reconciles it automatically</strong>.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Reconciliation is simple to describe and painful to do: check that what a business <em>expected</em> to
-              receive matches what actually <em>settled</em>. At scale that means matching hundreds of thousands of rows
-              across systems that don't agree. I designed two parts of the platform — the reconciliation experience
-              (this study) and the customer-master setup that feeds it clean data.
+              Reconciliation is simple to describe, painful to do: confirm what a business <em>expected</em> to receive
+              matches what actually <em>settled</em>. At scale, that's hundreds of thousands of rows across systems that
+              don't agree. I designed two parts — the reconciliation experience (this study) and the customer-master
+              setup that feeds it clean data.
             </p>
           </div>
         </Narrow>
@@ -1110,7 +1111,7 @@ function ZenStatementDetail() {
       <Chapter
         label="05 · Research & approach"
         title="Three signals, one way of working."
-        lead="Based on interviews with the small set of client finance teams already using ZenStatement — a focused, qualitative sample I treated as strong signals to design against, not statistics."
+        lead="From interviews with the finance teams already using ZenStatement — a small, qualitative sample I treated as signals to design against, not statistics."
       >
         <Quotes
           items={[
@@ -1263,7 +1264,7 @@ function DebtCollectionDetail() {
       <Chapter
         label="02 · Problem & objectives"
         title="Recovering money was slow, manual, and hard to see."
-        lead="Organisations struggle to recover overdue payments because the work is manual, communication is fragmented, and there's little visibility into performance — which raises cost, lowers recovery, and creates compliance risk."
+        lead="Recovering overdue payments is slow: the work is manual, communication is fragmented, and performance is hard to see — which raises cost, lowers recovery, and adds compliance risk."
       >
         <Personas
           items={[
@@ -1316,9 +1317,9 @@ function DebtCollectionDetail() {
           <div className="mt-6 rounded-2xl border border-border bg-muted/40 p-6">
             <span className="text-xs font-semibold uppercase tracking-[0.14em] text-primary" style={mono}>How I understood them</span>
             <p className="text-sm text-muted-foreground leading-relaxed mt-2">
-              No formal user research was available. I built understanding from product documentation, feature specs,
-              customer testimonials, and industry best practice — then validated assumptions through stakeholder
-              discussion and domain knowledge rather than direct interviews. I'd rather be honest about that than dress it up.
+              No formal user research was available. I built understanding from product docs, feature specs, customer
+              testimonials, and industry best practice, then pressure-tested assumptions with stakeholders and domain
+              knowledge rather than direct interviews. I'd rather be honest about that than dress it up.
             </p>
           </div>
         </Mid>

@@ -40,7 +40,7 @@ export function Hero({ onNav }: { onNav: (id: string) => void }) {
         />
         <div
           className="absolute -bottom-[15%] right-[4%] w-[40vw] h-[40vw] rounded-full blur-[120px] opacity-35"
-          style={{ background: "radial-gradient(circle, #8B7FF0, transparent 62%)", animation: reduced ? undefined : "aurora 24s ease-in-out infinite reverse" }}
+          style={{ background: "radial-gradient(circle, #9186F2, transparent 62%)", animation: reduced ? undefined : "aurora 24s ease-in-out infinite reverse" }}
         />
         <div
           className="absolute top-[28%] right-[26%] w-[26vw] h-[26vw] rounded-full blur-[100px] opacity-25"
@@ -74,42 +74,45 @@ export function Hero({ onNav }: { onNav: (id: string) => void }) {
       />
 
       {/* ── Content ── */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 py-20 flex flex-col items-center text-center gap-6">
+      <div className="relative z-10 w-full max-w-[56rem] mx-auto px-6 py-24 md:py-28 flex flex-col items-center text-center gap-8 md:gap-9">
         <Reveal variant="fade" duration={600}>
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-background/50 backdrop-blur-sm font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+          <span className="inline-flex items-center gap-2.5 pl-3.5 pr-4 py-2 rounded-full border border-border bg-card/40 backdrop-blur-md font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground shadow-soft-sm">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-primary/60 animate-[pulse-ring_2.4s_ease-out_infinite]" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+            </span>
             {PROFILE.role}
           </span>
         </Reveal>
 
-        <h1 className="font-serif font-bold text-foreground leading-[1.05] tracking-tight text-balance"
-          style={{ fontSize: "clamp(2.5rem, 5.5vw, 5rem)" }}>
-          {PROFILE.tagline.map((word, i) => (
-            <Reveal key={word} as="span" variant="blur" delay={140 + i * 130} duration={850} className="block">
-              {i === 1 ? (
-                <em
-                  className="italic font-normal bg-clip-text text-transparent"
-                  style={{
-                    backgroundImage: "linear-gradient(100deg, var(--primary), #b7abff, var(--primary))",
-                    backgroundSize: "200% auto",
-                    animation: reduced ? undefined : "gradient-pan 6s linear infinite",
-                  }}
-                >
-                  {word}
-                </em>
-              ) : word}
-            </Reveal>
-          ))}
+        <h1 className="font-serif font-bold text-foreground leading-[1.08] tracking-[-0.028em]"
+          style={{ fontSize: "clamp(2.25rem, 5vw, 4.25rem)" }}>
+          <Reveal as="span" variant="blur" delay={140} duration={850} className="block">
+            Making complexity
+          </Reveal>
+          <Reveal as="span" variant="blur" delay={270} duration={850} className="block">
+            feel{" "}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage: "linear-gradient(100deg, var(--primary), #b7abff, var(--primary))",
+                backgroundSize: "200% auto",
+                animation: reduced ? undefined : "gradient-pan 6s linear infinite",
+              }}
+            >
+              effortless
+            </span>
+          </Reveal>
         </h1>
 
         <Reveal variant="fade-up" delay={520}>
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-[560px] text-pretty">
+          <p className="text-lg md:text-xl text-muted-foreground leading-[1.65] max-w-[46ch] text-pretty">
             I&apos;m <strong className="text-foreground font-semibold">{PROFILE.name}</strong> — I turn dense, high-stakes workflows into calm, usable products, end-to-end from problem framing to developer handoff.
           </p>
         </Reveal>
 
         <Reveal variant="fade-up" delay={620}>
-          <div className="flex items-center justify-center pt-1">
+          <div className="flex items-center justify-center pt-2">
             <button onClick={() => onNav("work")} className="splat-btn" aria-label="View Work">
               <span>View Work</span>
             </button>

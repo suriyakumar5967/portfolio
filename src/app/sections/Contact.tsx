@@ -55,14 +55,14 @@ export function Contact() {
         </Reveal>
 
         <Reveal delay={60}>
-          <h2 className="font-serif text-4xl md:text-6xl font-bold leading-[1.05] text-balance">
+          <h2 className="font-serif text-3xl md:text-5xl font-bold leading-[1.1] text-balance">
             Let&apos;s build something{" "}
-            <em
-              className="italic font-normal bg-clip-text text-transparent"
+            <span
+              className="bg-clip-text text-transparent"
               style={{ backgroundImage: "linear-gradient(100deg, var(--primary), #b7abff, var(--primary))" }}
             >
               clear
-            </em>{" "}
+            </span>{" "}
             together.
           </h2>
         </Reveal>
