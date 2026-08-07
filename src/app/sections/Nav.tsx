@@ -1,6 +1,7 @@
 import { useState, useEffect, type CSSProperties } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import SkSvg from "@/imports/SkSvg1/index";
+import avatar from "@/assets/avatar.png";
 import { PROFILE } from "../lib/content";
 import { useScrollProgress, useScrollSpy } from "../lib/motion";
 import { ThemeToggle } from "./ThemeToggle";
@@ -85,11 +86,23 @@ export function Nav({
           : "bg-transparent backdrop-blur-0 border-transparent shadow-none"
       }`}>
         <div className="max-w-7xl mx-auto px-6 h-[64px] flex items-center justify-between gap-4">
-          {/* Left — logo */}
-          <button onClick={onHome} aria-label={`${PROFILE.name} — home`} className="flex-shrink-0 rounded-lg hover:opacity-70 transition-opacity">
-            <span className="block w-8 h-8" style={{ "--fill-0": logoFill } as CSSProperties}>
-              <SkSvg />
+          {/* Left — logo (SK mark → avatar droplet reveal on hover/press) */}
+          <button
+            onClick={onHome}
+            aria-label={`${PROFILE.name} — home`}
+            className="logo-swap group relative flex-shrink-0 w-8 h-8 rounded-full"
+          >
+            <span className="logo-mark absolute inset-0 grid place-items-center" style={{ "--fill-0": logoFill } as CSSProperties}>
+              <span className="block w-8 h-8">
+                <SkSvg />
+              </span>
             </span>
+            <img
+              src={avatar}
+              alt=""
+              aria-hidden
+              className="logo-avatar absolute inset-0 w-8 h-8 rounded-full object-cover"
+            />
           </button>
 
           {/* Right — pill group + theme toggle (desktop) */}

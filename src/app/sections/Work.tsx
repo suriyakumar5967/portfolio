@@ -20,13 +20,22 @@ function WorkCard({ cs, index, onOpen }: { cs: CaseStudySummary; index: number; 
       >
         {/* Cover — 40:21 matches the artwork, so the logo and title are never cropped. */}
         <div className="relative aspect-[40/21] overflow-hidden bg-muted flex-shrink-0">
+          {/* Light cover (light theme) */}
           <img
-            src={cs.image}
+            src={cs.imageLight ?? cs.image}
             alt={`${cs.title} — ${cs.subtitle}`}
             loading="lazy"
-            className={`w-full h-full object-cover transition-transform duration-[900ms] ease-out ${hover ? "scale-105" : "scale-100"}`}
+            className={`block dark:hidden w-full h-full object-cover transition-transform duration-[900ms] ease-out ${hover ? "scale-105" : "scale-100"}`}
           />
-          <div className={`absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-70"}`} />
+          {/* Dark cover (dark theme) */}
+          <img
+            src={cs.image}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            className={`hidden dark:block w-full h-full object-cover transition-transform duration-[900ms] ease-out ${hover ? "scale-105" : "scale-100"}`}
+          />
+          <div className={`absolute inset-0 bg-gradient-to-t from-black/10 dark:from-black/55 via-transparent to-transparent transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-70"}`} />
           {/* Right-aligned: the cover art carries its own brand mark top-left. */}
           <div className="absolute top-4 right-4">
             <span className="px-3 py-1 bg-background/90 backdrop-blur-sm rounded-full text-xs font-semibold border border-border/50">{cs.industry}</span>

@@ -16,11 +16,17 @@ import creoThinking from "@/assets/case-studies/creo-thinking.png";
 import creoChart from "@/assets/case-studies/creo-chart.png";
 
 // Card cover art — 1440×756 (40:21), matching the Work card's cover aspect exactly.
+// Dark theme uses the dark covers; light theme uses the light variants below.
 import coverNasdaq from "@/assets/case-studies/cover-nasdaq.webp";
 import coverZenstatement from "@/assets/case-studies/cover-zenstatement.webp";
 import coverCreo from "@/assets/case-studies/cover-creo.webp";
 import coverDebtCollection from "@/assets/case-studies/cover-debt-collection.webp";
 import coverMaxyfi from "@/assets/case-studies/cover-maxyfi.webp";
+import coverNasdaqLight from "@/assets/case-studies/cover-nasdaq-calypso-light.jpg";
+import coverZenstatementLight from "@/assets/case-studies/cover-zenstatement-light.jpg";
+import coverCreoLight from "@/assets/case-studies/cover-creo-light.jpg";
+import coverDebtCollectionLight from "@/assets/case-studies/cover-debt-collection-light.jpg";
+import coverMaxyfiLight from "@/assets/case-studies/cover-maxyfi-light.jpg";
 
 // Unified on Plus Jakarta Sans — `serif` kept as the display alias (no churn at call sites).
 const serif = { fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", letterSpacing: "-0.02em" } as const;
@@ -43,6 +49,7 @@ export const CASE_STUDIES = [
     outcomes: ["Modernised legacy UX", "Faster access to data", "Design system contributions"],
     skills: ["Information Architecture", "Enterprise UX", "Design Systems", "Data-Heavy UI"],
     image: coverNasdaq,
+    imageLight: coverNasdaqLight,
   },
   {
     id: 1,
@@ -58,6 +65,7 @@ export const CASE_STUDIES = [
     outcomes: ["Single source of truth", "Exceptions surfaced first", "Guided customer setup"],
     skills: ["User Research", "Information Architecture", "Data Tables", "Design System"],
     image: coverZenstatement,
+    imageLight: coverZenstatementLight,
   },
   {
     id: 2,
@@ -73,6 +81,7 @@ export const CASE_STUDIES = [
     outcomes: ["Ask instead of dig", "Context-aware answers", "Answers you can check"],
     skills: ["Conversation Design", "AI UX", "Interaction Design", "Data Visualisation"],
     image: coverCreo,
+    imageLight: coverCreoLight,
   },
   {
     id: 3,
@@ -88,6 +97,7 @@ export const CASE_STUDIES = [
     outcomes: ["One view of every debtor", "Self-serve debtor payments", "Compliance-aware workflows"],
     skills: ["Product Design", "Interaction Design", "Data Dashboards", "Payments UX"],
     image: coverDebtCollection,
+    imageLight: coverDebtCollectionLight,
   },
   {
     id: 4,
@@ -103,6 +113,7 @@ export const CASE_STUDIES = [
     outcomes: ["4 → 1 flows unified", "~35% fewer taps", "Field-ready mobile app"],
     skills: ["Mobile Design", "IA & Flows", "Interaction Design", "Design System"],
     image: coverMaxyfi,
+    imageLight: coverMaxyfiLight,
   },
 ];
 

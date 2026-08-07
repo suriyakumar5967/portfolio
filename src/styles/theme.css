@@ -478,3 +478,33 @@
 .theme-toggle .but,
 .theme-toggle .on,
 .theme-toggle .off { user-select: none; }
+
+/* ─── Nav logo → avatar droplet reveal (hover / press / focus) ──────────────── */
+.logo-swap .logo-avatar {
+  clip-path: circle(0% at 50% 50%);
+  transform: scale(0.7);
+  transition: clip-path 0.55s cubic-bezier(0.34, 1.6, 0.5, 1),
+              transform 0.55s cubic-bezier(0.34, 1.6, 0.5, 1);
+  will-change: clip-path, transform;
+}
+.logo-swap .logo-mark {
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.logo-swap:hover .logo-avatar,
+.logo-swap:active .logo-avatar,
+.logo-swap:focus-visible .logo-avatar {
+  clip-path: circle(72% at 50% 50%);
+  transform: scale(1);
+}
+.logo-swap:hover .logo-mark,
+.logo-swap:active .logo-mark,
+.logo-swap:focus-visible .logo-mark {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-swap .logo-avatar, .logo-swap .logo-mark { transition: opacity 0.2s ease; }
+  .logo-swap .logo-avatar { transform: none; }
+  .logo-swap:hover .logo-avatar { clip-path: circle(72% at 50% 50%); }
+}
