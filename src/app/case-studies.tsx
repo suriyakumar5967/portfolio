@@ -314,7 +314,7 @@ function MaxyfiDetail() {
             <div>
               <Eyebrow>UX Case Study · Field Agent App · 2024</Eyebrow>
               <h1 className="font-bold text-foreground leading-[1.05] tracking-tight mt-1" style={{ ...serif, fontSize: "clamp(2.5rem, 5.5vw, 4rem)" }}>
-                Collections, <em className="italic font-normal text-primary">built for the field.</em>
+                Collections, <em className="not-italic text-primary">built for the field.</em>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mt-6 max-w-xl">
                 A mobile app that puts a collection agent's whole day on one screen — who to visit, what to do next, and one tap to do it.
@@ -1031,7 +1031,7 @@ function ZenStatementDetail() {
     <article>
       <CaseHero
         eyebrow="UX Case Study · FinOps · 2025"
-        title={<>Turning spreadsheet reconciliation into <em className="italic font-normal text-primary">one clear view.</em></>}
+        title={<>Turning spreadsheet reconciliation into <em className="not-italic text-primary">one clear view.</em></>}
         lead="Designing the reconciliation experience for ZenStatement — an AI finance platform that helps high-volume businesses match thousands of transactions automatically, and fix the ones that don't."
         meta={[
           { label: "Role", value: "Product Designer", sub: "Solo · end-to-end" },
@@ -1239,7 +1239,7 @@ function DebtCollectionDetail() {
     <article>
       <CaseHero
         eyebrow="UX Case Study · Debt Collection · B2B2C"
-        title={<>Debt collection, <em className="italic font-normal text-primary">simplified.</em></>}
+        title={<>Debt collection, <em className="not-italic text-primary">simplified.</em></>}
         lead="Maxyfi is a SaaS platform for recovering overdue payments. I designed two connected sides of it — the dashboard collections teams use to manage every debtor, and the portal debtors use to actually pay."
         meta={[
           { label: "Role", value: "Product Designer", sub: "Sole designer" },
@@ -1428,7 +1428,7 @@ function CreoDetail() {
     <article>
       <CaseHero
         eyebrow="UX Case Study · ZenStatement · NDA-limited"
-        title={<>Reconciliation you can just <em className="italic font-normal text-primary">ask.</em></>}
+        title={<>Reconciliation you can just <em className="not-italic text-primary">ask.</em></>}
         lead="Creo is an AI assistant built into ZenStatement. Instead of digging through the platform to find out what happened to a transaction, finance teams ask in plain language — and get an answer backed by their own data."
         meta={[
           { label: "Role", value: "Product Designer" },
@@ -1808,7 +1808,7 @@ function NasdaqDetail() {
     <article>
       <CaseHero
         eyebrow="UX Case Study · Capital Markets · NDA"
-        title={<>Making a complex platform <em className="italic font-normal text-primary">easier to work in.</em></>}
+        title={<>Making a complex platform <em className="not-italic text-primary">easier to work in.</em></>}
         lead="Calypso is a long-standing capital-markets platform used by expert teams in risk, operations, compliance, and finance. I worked on modernising its reporting experience — so people could find and trust the data they needed without fighting the interface."
         meta={[
           { label: "Role", value: "Product Designer" },
