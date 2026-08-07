@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { PROFILE, ABOUT_INTRO, EXPERIENCE, SKILL_GROUPS, AI_LOGOS, DESIGN_PRINCIPLES } from "../lib/content";
 import { Reveal, useReducedMotion } from "../lib/motion";
-import { SectionLabel, Container, ctaButtonClass } from "../ui";
+import { SectionLabel, Container } from "../ui";
 import { Contact } from "../sections/Contact";
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
@@ -95,6 +95,10 @@ function GhostWord({ children }: { children: string }) {
 
 // ── Hero ─────────────────────────────────────────────────────────────────────
 
+// Outline CTA — transparent, not filled (matches the "View Work" style on the hero).
+const resumeOutlineClass =
+  "group inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-border bg-transparent text-foreground text-sm font-semibold transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform hover:-translate-y-0.5 hover:border-foreground/30 hover:bg-muted/40 active:translate-y-0";
+
 function ResumeButton() {
   const url = PROFILE.resumeUrl;
   const inner = (
@@ -105,13 +109,13 @@ function ResumeButton() {
   );
   if (!url) {
     return (
-      <button title="Resume — coming soon" aria-disabled="true" className={`${ctaButtonClass} cursor-default`}>
+      <button title="Resume — coming soon" aria-disabled="true" className={`${resumeOutlineClass} cursor-default`}>
         {inner}
       </button>
     );
   }
   return (
-    <a href={url} download className={ctaButtonClass}>
+    <a href={url} download className={resumeOutlineClass}>
       {inner}
     </a>
   );

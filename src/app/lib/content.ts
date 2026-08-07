@@ -20,7 +20,7 @@ export const PROFILE = {
   location: "India · Remote",
   email: "suriyakumar.jsk10@gmail.com",
   // Opens in a new tab (résumé / CV).
-  resumeUrl: "https://drive.google.com/file/d/1LY5Mq_6hGA1QgqZkJ6jVA6tVtEb0h8vh/view?usp=drive_link",
+  resumeUrl: "https://drive.google.com/file/d/1fr8g7TlbDSkQa86o2FjmC-jzaYC2v0Tf/view?usp=sharing",
   // Fill these in when the user provides them; empty = shown but inert.
   socials: {
     linkedin: "https://www.linkedin.com/in/suriya-kumar-jsk10/",

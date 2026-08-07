@@ -106,8 +106,8 @@ export function Hero({ onNav }: { onNav: (id: string) => void }) {
         </h1>
 
         <Reveal variant="fade-up" delay={520}>
-          <p className="text-lg md:text-xl text-muted-foreground leading-[1.65] max-w-[46ch] text-pretty">
-            I&apos;m <strong className="text-foreground font-semibold">{PROFILE.name}</strong> — I turn dense, high-stakes workflows into calm, usable products, end-to-end from problem framing to developer handoff.
+          <p className="text-lg md:text-xl text-muted-foreground leading-[1.65] max-w-[52ch] text-pretty">
+            <strong className="text-foreground font-semibold">{PROFILE.name}</strong> is a Product Designer crafting AI and data-driven products that help people make smarter, more confident decisions.
           </p>
         </Reveal>
 
