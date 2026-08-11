@@ -1,18 +1,15 @@
-import { useRef, useMemo, type ComponentType } from "react";
+import { useRef, type ComponentType } from "react";
 import {
   Download, Sparkles, Layers, PenTool, MousePointer2, Component, PencilRuler,
   MousePointerClick, Accessibility, Search, ClipboardCheck, Network, Route,
   Shapes, Palette, FlaskConical, StickyNote, Eye, Target, Microscope, Blocks,
 } from "lucide-react";
-import { PROFILE, ABOUT_INTRO, EXPERIENCE, SKILL_GROUPS, AI_LOGOS, DESIGN_PRINCIPLES } from "../lib/content";
+import { PROFILE, EXPERIENCE, SKILL_GROUPS, AI_LOGOS, DESIGN_PRINCIPLES } from "../lib/content";
 import { Reveal, useReducedMotion } from "../lib/motion";
 import { SectionLabel, Container } from "../ui";
 import { Contact } from "../sections/Contact";
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
-
-const GRAIN =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E";
 
 const SKILL_ICON: Record<string, IconType> = {
   "UX Design": Layers, "UI Design": PenTool, "Interaction Design": MousePointer2,
@@ -23,65 +20,6 @@ const SKILL_ICON: Record<string, IconType> = {
 };
 const GROUP_ICON: Record<string, IconType> = { "Product Design": Layers, "Research": Microscope, "Tools": Palette };
 const PRINCIPLE_ICON: Record<string, IconType> = { "01": Eye, "02": Target, "03": Microscope, "04": Blocks };
-
-// ── Ambient background primitives ────────────────────────────────────────────
-
-function Particles({ count = 9 }: { count?: number }) {
-  const reduced = useReducedMotion();
-  const dots = useMemo(
-    () => Array.from({ length: count }).map(() => ({
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      size: 3 + Math.random() * 4,
-      delay: Math.random() * 6,
-      dur: 6 + Math.random() * 6,
-    })),
-    [count]
-  );
-  if (reduced) return null;
-  return (
-    <div aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden">
-      {dots.map((d, i) => (
-        <span
-          key={i}
-          className="absolute rounded-full bg-primary/40 blur-[1px]"
-          style={{
-            left: `${d.left}%`, top: `${d.top}%`, width: d.size, height: d.size,
-            animation: `twinkle ${d.dur}s ease-in-out ${d.delay}s infinite`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-/** Layered radial mesh + grid + grain + floating blobs. Reduced-motion aware. */
-function Ambient({ reduced }: { reduced: boolean }) {
-  return (
-    <div aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden">
-      {/* blobs */}
-      <div className="absolute -top-24 -left-24 w-[42vw] h-[42vw] rounded-full blur-[120px] opacity-40"
-        style={{ background: "radial-gradient(circle, var(--primary), transparent 62%)", animation: reduced ? undefined : "aurora 20s ease-in-out infinite" }} />
-      <div className="absolute top-1/3 -right-24 w-[38vw] h-[38vw] rounded-full blur-[130px] opacity-30"
-        style={{ background: "radial-gradient(circle, #9186F2, transparent 62%)", animation: reduced ? undefined : "aurora 26s ease-in-out infinite reverse" }} />
-      {/* gradient mesh */}
-      <div className="absolute inset-0 opacity-[0.5]"
-        style={{ background: "radial-gradient(60% 50% at 20% 10%, var(--accent-soft), transparent 60%), radial-gradient(50% 40% at 85% 30%, var(--accent-soft), transparent 60%)" }} />
-      {/* animated grid */}
-      <div className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: "linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)",
-          backgroundSize: "44px 44px",
-          animation: reduced ? undefined : "grid-pan 30s linear infinite",
-          maskImage: "radial-gradient(ellipse 80% 70% at 50% 30%, black 40%, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 30%, black 40%, transparent 80%)",
-        }} />
-      {/* grain */}
-      <div className="absolute inset-0 opacity-[0.3] mix-blend-soft-light" style={{ backgroundImage: `url("${GRAIN}")`, backgroundSize: "180px" }} />
-      <Particles />
-    </div>
-  );
-}
 
 // A large faded word behind a section heading, for editorial depth.
 function GhostWord({ children }: { children: string }) {
@@ -124,7 +62,6 @@ function ResumeButton() {
 function AboutHero() {
   const reduced = useReducedMotion();
   const glowRef = useRef<HTMLDivElement>(null);
-  const tiltRef = useRef<HTMLDivElement>(null);
   const raf = useRef(0);
 
   // Mouse-reactive glow across the hero.
@@ -141,93 +78,98 @@ function AboutHero() {
     });
   };
 
-  // Portrait cursor tilt + parallax.
-  const onPortraitMove = (e: React.MouseEvent) => {
-    if (reduced || !window.matchMedia("(pointer: fine)").matches) return;
-    const el = tiltRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const px = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
-    const py = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
-    el.style.transform = `perspective(900px) rotateY(${(px * 6).toFixed(2)}deg) rotateX(${(-py * 6).toFixed(2)}deg) translate3d(${(px * 6).toFixed(1)}px, ${(py * 6).toFixed(1)}px, 0) scale(1.04)`;
-  };
-  const onPortraitLeave = () => {
-    const el = tiltRef.current;
-    if (el) el.style.transform = "perspective(900px) rotateY(0) rotateX(0) translate3d(0,0,0) scale(1)";
-  };
-
   return (
-    <header onMouseMove={onHeroMove} className="relative pt-32 pb-24 md:pt-40 md:pb-28 overflow-hidden">
-      <Ambient reduced={reduced} />
-      <div ref={glowRef} aria-hidden className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(480px circle at var(--mx, 70%) var(--my, 30%), var(--accent-soft), transparent 70%)" }} />
+    <header onMouseMove={onHeroMove} className="relative flex items-center min-h-[100svh] pt-28 pb-14 md:pt-24 md:pb-16 overflow-hidden">
+      {/* Dotted field — the calm, editorial backdrop from the reference. Theme-aware. */}
+      <div aria-hidden className="absolute inset-0 -z-10"
+        style={{
+          backgroundImage: "radial-gradient(color-mix(in srgb, var(--foreground) 13%, transparent) 1px, transparent 1px)",
+          backgroundSize: "22px 22px",
+          maskImage: "radial-gradient(ellipse 90% 80% at 25% 15%, black 35%, transparent 85%)",
+          WebkitMaskImage: "radial-gradient(ellipse 90% 80% at 25% 15%, black 35%, transparent 85%)",
+        }} />
+      {/* Soft accent glow behind the portrait side. */}
+      <div aria-hidden className="absolute -z-10 top-0 right-0 w-[46vw] h-[70vh] rounded-full blur-[130px] opacity-40 pointer-events-none"
+        style={{ background: "radial-gradient(circle, var(--accent-soft), transparent 70%)" }} />
+      <div ref={glowRef} aria-hidden className="absolute inset-0 -z-10 pointer-events-none"
+        style={{ background: "radial-gradient(460px circle at var(--mx, 75%) var(--my, 25%), var(--accent-soft), transparent 70%)" }} />
 
       <Container>
-        <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_0.82fr] gap-14 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-12 items-stretch w-full py-6 md:py-8">
           {/* Copy */}
-          <div className="flex flex-col gap-7 order-2 lg:order-1">
-            <Reveal><SectionLabel>About</SectionLabel></Reveal>
-            <Reveal delay={60}>
-              <h1 className="font-serif font-bold text-foreground leading-[1.0] tracking-tight" style={{ fontSize: "clamp(3rem, 6.5vw, 5.25rem)" }}>
-                {PROFILE.role}
+          <div className="flex flex-col justify-center order-2 lg:order-1">
+            <Reveal delay={40}>
+              <h1 className="font-serif font-bold text-foreground leading-[1.06] tracking-tight" style={{ fontSize: "clamp(1.85rem, 3.6vw, 2.85rem)" }}>
+                Hello, I&apos;m <span className="text-primary">Suriya Kumar J</span>.
+                <br className="hidden sm:block" /> I design products for
+                <br className="hidden sm:block" /> complex problems.
               </h1>
             </Reveal>
-            {ABOUT_INTRO.map((p, i) => (
-              <Reveal key={i} delay={120 + i * 70}>
-                <p className={`leading-relaxed text-pretty max-w-xl ${i === 0 ? "text-lg md:text-xl text-foreground/90" : "text-muted-foreground"}`}>{p}</p>
+
+            {/* Vertical label + intro copy — mirrors the reference structure. */}
+            <div className="mt-7 flex gap-5 md:gap-7">
+              {/* Rotated "ABOUT" label with a descending rule */}
+              <Reveal delay={120} className="hidden sm:flex flex-col items-center shrink-0 pt-1">
+                <span className="[writing-mode:vertical-rl] rotate-180 font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+                  About me
+                </span>
+                <span aria-hidden className="mt-4 w-px flex-1 bg-gradient-to-b from-border to-transparent" />
               </Reveal>
-            ))}
-            <Reveal delay={340}>
-              <div className="pt-2"><ResumeButton /></div>
-            </Reveal>
+
+              <div className="flex flex-col gap-3.5">
+                <Reveal delay={160}>
+                  <p className="text-[15px] md:text-base leading-relaxed text-foreground/90 text-pretty max-w-xl">
+                    I&apos;m a Senior Product Designer with 5+ years of experience across fintech, enterprise SaaS, and capital markets.
+                  </p>
+                </Reveal>
+                <Reveal delay={220}>
+                  <p className="text-sm md:text-[15px] leading-relaxed text-muted-foreground text-pretty max-w-xl">
+                    I&apos;ve designed everything from trading and reporting workflows to reconciliation, collections, and AI-powered operational tools — often taking products from 0→1 and simplifying complex, data-heavy systems.
+                  </p>
+                </Reveal>
+                <Reveal delay={280}>
+                  <p className="text-sm md:text-[15px] leading-relaxed text-muted-foreground text-pretty max-w-xl">
+                    Beyond the interface, I work closely with product to shape requirements, define scope, and turn messy problems into products that make sense.
+                  </p>
+                </Reveal>
+
+                <Reveal delay={340}>
+                  <div className="pt-3">
+                    <ResumeButton />
+                  </div>
+                </Reveal>
+              </div>
+            </div>
           </div>
 
-          {/* Portrait */}
-          <div className="flex justify-center lg:justify-end order-1 lg:order-2">
-            <div
-              onMouseMove={onPortraitMove}
-              onMouseLeave={onPortraitLeave}
-              className="group relative"
-              style={{ perspective: "900px" }}
-            >
-              {/* blurred gradient glow behind */}
-              <div aria-hidden className="absolute -inset-8 rounded-[3rem] blur-2xl opacity-60 transition-opacity duration-500 group-hover:opacity-90"
-                style={{ background: "radial-gradient(circle at 50% 35%, var(--primary), transparent 62%)" }} />
-              {/* floating blobs behind portrait */}
-              <div aria-hidden className="absolute -top-10 -right-8 w-32 h-32 rounded-full blur-2xl opacity-50"
-                style={{ background: "radial-gradient(circle, var(--accent), transparent 65%)", animation: reduced ? undefined : "float 9s ease-in-out infinite" }} />
-              <div aria-hidden className="absolute -bottom-10 -left-8 w-36 h-36 rounded-full blur-2xl opacity-40"
-                style={{ background: "radial-gradient(circle, #9186F2, transparent 65%)", animation: reduced ? undefined : "float 12s ease-in-out infinite reverse" }} />
-              {/* rotating ring */}
-              <div aria-hidden className="absolute -inset-5 rounded-[2.6rem] border border-border/50"
-                style={{ animation: reduced ? undefined : "spin-slow 70s linear infinite" }} />
+          {/* Portrait — responsive panel: fixed ratio on small screens, fills the
+              column height on desktop. Branded overlay works in both themes. */}
+          <div className="order-1 lg:order-2">
+            <Reveal variant="scale" delay={80} className="h-full">
+              <div className="group relative w-full h-full aspect-[4/5] sm:aspect-[16/10] lg:aspect-auto lg:h-full min-h-[280px] lg:min-h-[460px] rounded-[2rem] overflow-hidden border border-border shadow-soft-xl bg-gradient-to-br from-primary/20 via-muted to-accent/10">
+                <img
+                  src="/portrait.jpg"
+                  alt={`${PROFILE.name} — ${PROFILE.role}`}
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                  className="absolute inset-0 w-full h-full object-cover object-center sm:object-[center_18%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                />
+                {/* Brand tint + legibility scrim — keeps the badge readable in both themes. */}
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-tr from-primary/25 via-transparent to-accent/10 mix-blend-soft-light" />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
 
-              {/* Tilting frame */}
-              <div ref={tiltRef} className="relative transition-transform duration-500 ease-out will-change-transform" style={{ transformStyle: "preserve-3d" }}>
-                {/* subtle soft border glow */}
-                <div aria-hidden className="absolute -inset-px rounded-[2.2rem] opacity-0 group-hover:opacity-50 transition-opacity duration-500"
-                  style={{ background: "radial-gradient(circle at 50% 0%, var(--primary), transparent 60%)", filter: "blur(12px)" }} />
-                <div className="relative w-[280px] sm:w-[340px] lg:w-[380px] aspect-[4/5] rounded-[2.2rem] overflow-hidden border border-border shadow-soft-lg bg-gradient-to-br from-primary/20 via-muted to-accent/5 transition-shadow duration-500 group-hover:shadow-[0_24px_60px_-24px_rgba(91,63,232,0.25)]">
-                  <img
-                    src="/portrait.jpg"
-                    alt={`${PROFILE.name} — ${PROFILE.role}`}
-                    onError={(e) => { e.currentTarget.style.display = "none"; }}
-                    className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 group-hover:brightness-110 group-hover:scale-[1.03]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-background/85 backdrop-blur-md border border-border/60 transition-transform duration-500 group-hover:-translate-y-0.5">
-                    <div className="font-serif text-base font-bold text-foreground leading-none">{PROFILE.name}</div>
-                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1.5">
-                      <span className="relative flex h-2 w-2">
-                        <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" style={{ animation: "pulse-ring 2s cubic-bezier(0,0,0.2,1) infinite" }} />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-                      </span>
-                      Available for new projects
-                    </div>
+                {/* Status badge */}
+                <div className="absolute bottom-4 left-4 right-4 sm:left-5 sm:right-auto p-4 rounded-2xl bg-background/85 backdrop-blur-md border border-border/60 transition-transform duration-500 group-hover:-translate-y-0.5">
+                  <div className="font-serif text-base font-bold text-foreground leading-none">{PROFILE.name}</div>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1.5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" style={{ animation: reduced ? undefined : "pulse-ring 2s cubic-bezier(0,0,0.2,1) infinite" }} />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                    </span>
+                    {PROFILE.available ? "Available for new projects" : PROFILE.location}
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </Container>
@@ -372,72 +314,62 @@ function Skills() {
 // ── Design principles ────────────────────────────────────────────────────────
 
 function Principles() {
+  // Desktop corner positions for the orbital layout (mobile falls back to a grid).
+  const cornerPos = [
+    "lg:top-0 lg:left-0",
+    "lg:top-0 lg:right-0",
+    "lg:bottom-0 lg:left-0",
+    "lg:bottom-0 lg:right-0",
+  ];
   return (
     <section className="relative py-28 border-t border-border bg-muted/20 overflow-hidden">
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <div aria-hidden className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[62vw] h-[42vh] rounded-full blur-[130px] opacity-40 pointer-events-none"
+      <div aria-hidden className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[52vw] h-[42vh] rounded-full blur-[140px] opacity-40 pointer-events-none"
         style={{ background: "radial-gradient(circle, var(--accent-soft), transparent 70%)" }} />
+
       <Container>
-        <div className="relative">
-          <GhostWord>Beliefs</GhostWord>
-          <Reveal><SectionLabel>Design principles</SectionLabel></Reveal>
-          <Reveal delay={60}>
-            <h2 className="font-serif text-3xl md:text-5xl font-bold mt-4 tracking-tight">What guides every decision.</h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <p className="text-muted-foreground mt-4 max-w-2xl leading-relaxed text-pretty">
-              Four checks I keep coming back to — the ones that keep the work honest, focused, and easy to trust.
-            </p>
-          </Reveal>
-        </div>
+        <Reveal className="text-center"><SectionLabel>Design principles</SectionLabel></Reveal>
 
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-          {DESIGN_PRINCIPLES.map((p, i) => {
-            const Icon = PRINCIPLE_ICON[p.n] ?? Sparkles;
-            return (
-              <Reveal key={p.n} variant="fade-up" delay={i * 90}>
-                <div
-                  className="group relative h-full rounded-[1.75rem] border border-border overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-soft-xl"
-                  style={{ background: "linear-gradient(157deg, color-mix(in srgb, var(--card) 100%, transparent), color-mix(in srgb, var(--card) 78%, transparent))" }}
-                >
-                  {/* top gloss highlight */}
-                  <div aria-hidden className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/[0.07] to-transparent pointer-events-none" />
-                  {/* hover glow */}
-                  <div aria-hidden className="absolute -top-20 -right-20 w-56 h-56 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{ background: "radial-gradient(circle, var(--accent-soft), transparent 70%)" }} />
-                  {/* sheen sweep on hover */}
-                  <div aria-hidden className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -inset-y-4 -left-1/3 w-1/4 bg-gradient-to-r from-transparent via-white/[0.10] to-transparent opacity-0 group-hover:opacity-100 group-hover:[animation:sheen_1s_ease]" />
-                  </div>
+        {/* Orbital field — dashed rings + central statement + four corner cards */}
+        <div className="relative mt-10 lg:mt-6 lg:h-[720px]">
+          {/* Concentric dashed rings (desktop only) */}
+          <div aria-hidden className="hidden lg:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+            {[360, 540, 720].map((d, i) => (
+              <div
+                key={d}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed"
+                style={{ width: d, height: d, borderColor: `color-mix(in srgb, var(--foreground) ${18 - i * 5}%, transparent)` }}
+              />
+            ))}
+          </div>
 
-                  <div className="relative p-7 md:p-8 flex flex-col gap-5">
-                    <div className="flex items-start justify-between">
-                      {/* glossy icon medallion */}
-                      <span
-                        className="relative grid place-items-center w-14 h-14 rounded-2xl text-primary shadow-soft-md transition-transform duration-500 group-hover:scale-105"
-                        style={{ background: "linear-gradient(145deg, color-mix(in srgb, var(--primary) 24%, transparent), color-mix(in srgb, var(--primary) 6%, transparent))" }}
-                      >
-                        <span aria-hidden className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/15" />
-                        <span aria-hidden className="absolute inset-x-2.5 top-1.5 h-3 rounded-full bg-white/25 blur-[3px]" />
-                        <Icon size={24} className="relative" />
-                      </span>
-                      {/* large glossy number */}
-                      <span
-                        className="font-serif text-5xl md:text-6xl font-bold leading-none bg-clip-text text-transparent select-none"
-                        style={{ backgroundImage: "linear-gradient(180deg, color-mix(in srgb, var(--primary) 38%, transparent), color-mix(in srgb, var(--primary) 7%, transparent))" }}
-                      >
-                        {p.n}
-                      </span>
-                    </div>
-                    <div>
-                      <h3 className="text-xl md:text-2xl font-bold text-foreground leading-snug">{p.title}</h3>
-                      <p className="text-[15px] text-muted-foreground leading-relaxed mt-2.5">{p.body}</p>
-                    </div>
-                  </div>
+          {/* Central statement */}
+          <Reveal variant="fade" className="relative z-10 mb-10 text-center lg:mb-0 lg:absolute lg:inset-0 lg:grid lg:place-items-center">
+            <div className="mx-auto max-w-[220px] sm:max-w-sm lg:max-w-[360px] px-2">
+              <h2 className="font-serif text-2xl md:text-3xl font-bold leading-[1.2] tracking-tight text-balance">
+                What guides every decision.
+              </h2>
+              <p className="text-[15px] text-muted-foreground leading-relaxed mt-4 text-pretty">
+                Four checks I keep coming back to — the ones that keep the work honest, focused, and easy to trust.
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Cards — grid on mobile, absolute corners on desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:block">
+            {DESIGN_PRINCIPLES.map((p, i) => (
+              <Reveal key={p.n} variant="fade-up" delay={i * 90} className={`lg:absolute lg:w-[358px] ${cornerPos[i]}`}>
+                <div className="group relative h-full rounded-3xl border border-border bg-card p-7 md:p-8 shadow-soft-lg transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-foreground/20 hover:shadow-soft-xl">
+                  {/* numbered badge — inverts with theme */}
+                  <span className="absolute top-6 right-6 grid place-items-center w-11 h-11 rounded-full bg-foreground text-background text-[13px] font-bold font-mono">
+                    {p.n}
+                  </span>
+                  <h3 className="text-lg md:text-xl font-bold text-foreground leading-snug pr-14">{p.title}</h3>
+                  <p className="text-[15px] text-muted-foreground leading-relaxed mt-7 md:mt-9">{p.body}</p>
                 </div>
               </Reveal>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </Container>
     </section>

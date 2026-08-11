@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ArrowLeft, ArrowUpRight, Check, List, Lock } from "lucide-react";
 import { Reveal, useScrollSpy } from "./lib/motion";
 import { PROFILE } from "./lib/content";
@@ -2111,6 +2111,108 @@ function Toc({ items, activeId, onJump }: {
   );
 }
 
+// Case studies that sit behind a password. NOTE: this is a soft gate for casual
+// browsing (an NDA courtesy) — it is NOT real security, since the password and the
+// content both ship in the client bundle.
+const GATED_PASSWORDS: Record<string, string> = {
+  "nasdaq-calypso": "9500",
+};
+
+/**
+ * Themed password screen. Unlocks its children on the correct password.
+ * Intentionally keeps no memory — the gate is shown every time the case
+ * study is opened. Adapts to light/dark via theme tokens.
+ */
+function CaseGate({
+  password, title, onBack, children,
+}: {
+  password: string; title: string; onBack: () => void; children: React.ReactNode;
+}) {
+  const [unlocked, setUnlocked] = useState(false);
+  const [value, setValue] = useState("");
+  const [error, setError] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => { if (!unlocked) inputRef.current?.focus(); }, [unlocked]);
+
+  if (unlocked) return <>{children}</>;
+
+  return (
+    <section className="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden px-6 pt-[60px] pb-16">
+      <div aria-hidden className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[62vw] h-[40vh] rounded-full blur-[130px] opacity-40 pointer-events-none"
+        style={{ background: "radial-gradient(circle, var(--accent-soft), transparent 70%)" }} />
+
+      <div className="relative w-full max-w-md">
+        <button
+          onClick={onBack}
+          className="group inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft size={15} className="group-hover:-translate-x-0.5 transition-transform" />
+          Back to work
+        </button>
+
+        <Reveal variant="scale">
+          <div className="mt-6 rounded-3xl border border-border bg-card p-8 md:p-10 shadow-soft-xl text-center">
+            <span className="grid place-items-center w-14 h-14 rounded-2xl bg-primary/10 text-primary mx-auto ring-1 ring-inset ring-primary/15">
+              <Lock size={24} />
+            </span>
+            <h1 className="font-serif text-2xl md:text-3xl font-bold text-foreground mt-6" style={serif}>Protected case study</h1>
+            <p className="text-[15px] text-muted-foreground leading-relaxed mt-3">
+              {title} is covered by a strict NDA. Enter the password to view it.
+            </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (value === password) {
+                  setUnlocked(true);
+                } else {
+                  setError(true);
+                  setValue("");
+                  inputRef.current?.focus();
+                }
+              }}
+              className="mt-7 flex flex-col gap-3"
+            >
+              <input
+                ref={inputRef}
+                type="password"
+                inputMode="numeric"
+                autoComplete="off"
+                value={value}
+                onChange={(e) => { setValue(e.target.value); setError(false); }}
+                aria-label="Password"
+                aria-invalid={error}
+                placeholder="••••"
+                className={`w-full h-12 rounded-xl border bg-muted/50 px-4 text-center text-lg tracking-[0.5em] text-foreground placeholder:tracking-normal placeholder:text-muted-foreground/40 transition-all duration-200 focus:outline-none focus:ring-2 ${
+                  error ? "border-red-500/60 focus:ring-red-500/25" : "border-border focus:border-primary focus:ring-primary/25"
+                }`}
+              />
+              <p className={`text-sm text-red-500 dark:text-red-400 transition-opacity ${error ? "opacity-100" : "opacity-0"}`} role="alert">
+                Incorrect password. Please try again.
+              </p>
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center gap-2 h-12 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-soft-md ring-1 ring-inset ring-white/10 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-soft-xl active:translate-y-0"
+              >
+                Unlock case study
+              </button>
+            </form>
+          </div>
+        </Reveal>
+
+        <p className="text-center text-xs text-muted-foreground mt-6">
+          Don't have the password?{" "}
+          <a href={PROFILE.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">
+            Reach out on LinkedIn
+          </a>
+          .
+        </p>
+      </div>
+    </section>
+  );
+}
+
 export function CaseStudyPage({ slug: key, onBack, onOpenCase }: {
   slug: string; onBack: () => void; onOpenCase?: (slug: string) => void;
 }) {
@@ -2132,7 +2234,9 @@ export function CaseStudyPage({ slug: key, onBack, onOpenCase }: {
 
   if (!Detail || !cs) return null;
 
-  return (
+  const gatePassword = GATED_PASSWORDS[key];
+
+  const page = (
     <div className="mx-auto max-w-[1500px] lg:grid lg:grid-cols-[minmax(0,1fr)_232px] lg:gap-6 xl:gap-10">
       {/* Content column */}
       <div className="min-w-0">
@@ -2202,4 +2306,14 @@ export function CaseStudyPage({ slug: key, onBack, onOpenCase }: {
       </aside>
     </div>
   );
+
+  if (gatePassword) {
+    return (
+      <CaseGate password={gatePassword} title={cs.title} onBack={onBack}>
+        {page}
+      </CaseGate>
+    );
+  }
+
+  return page;
 }
